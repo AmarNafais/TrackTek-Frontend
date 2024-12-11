@@ -6,6 +6,7 @@ import ForgotPassword from "../components/login/forgot-password.js"
 import VerifyCode from "../components/login/verify-code.js"
 import SetPassword from "../components/login/set-password.js"
 import Dashboard from "../components/dashboard/index.js"
+import User from "../components/user/index.js"
 const AppRoutes = () => {
   return (
     <Router>
@@ -16,6 +17,7 @@ const AppRoutes = () => {
         <Route path="/verifycode" element={<VerifyCode />} />
         <Route path="/setpassword" element={<SetPassword />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/user" element={<User />} />
       </Routes>
     </Router>
   );

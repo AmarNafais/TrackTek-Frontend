@@ -25,7 +25,7 @@ const Sidebar = () => {
         <MdSpaceDashboard className="side-nav-icons" />
         <span>Dashboard</span>
       </div>
-      <div className="menu-item">
+      <div className="menu-item" a href='/user'>
         <HiMiniUsers className="side-nav-icons" />
         <span>Users</span>
       </div>

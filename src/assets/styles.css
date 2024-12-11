@@ -888,7 +888,7 @@ button:hover {
     border-radius: 50%;
     font-size: 24px;
     cursor: pointer;
-    color:#2B3A8E;
+    color: #2B3A8E;
     width: 9.5%;
     padding: 5px;
 }
@@ -957,4 +957,289 @@ button:hover {
     width: 40%;
     margin-top: 1px;
     margin-right: -5px;
+}
+
+/* user.css */
+
+.users-page {
+    padding: 20px;
+    padding-top: 50px;
+}
+
+.users-page h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #4a4a4a;
+}
+
+.add-user-button {
+    background-color: #273c75;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-bottom: 20px;
+    transition: background-color 0.3s ease;
+    width: 12%;
+    margin-left: 88%;
+}
+
+.add-user-button:hover {
+    background-color: #357abd;
+}
+
+.users-table-container {
+    margin-left: -5.5%;
+    margin-top: -2%;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transform: scale(0.9);
+}
+
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.users-table thead {
+    background-color: #273c75;
+    color: #ffffff;
+}
+
+.users-table th,
+.users-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    margin-top: 10px;
+}
+
+.users-table tbody tr td:last-child {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.users-table tbody tr:hover {
+    background-color: #f4f6f9;
+}
+
+.action-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 5px;
+}
+
+.edit-button {
+    color: #273c75;
+}
+
+.delete-button {
+    color: #273c75;
+}
+
+.action-button:hover {
+    transform: scale(1.1);
+    background-color: transparent;
+}
+
+/* add-user-modal.css */
+
+.add-user-modal .add-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.add-user-modal .add-modal-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 50%;
+    z-index: 1001;
+}
+
+.add-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.add-modal-header h3 {
+    margin: 0;
+}
+
+.add-modal-header .close-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.add-modal-body .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.add-modal-body input,
+.add-modal-body select {
+    width: 93%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.add-modal-body select {
+    width: 100%;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.add-user-modal-button {
+    background: #273c75;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.cancel-button {
+    background: #273c75;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+    margin-top: 5px;
+}
+
+/* edit-user-modal.css */
+
+.edit-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.edit-modal-content {
+    background-color: #ffffff;
+    width: 50%;
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.edit-modal-content h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+}
+
+.edit-modal-content p {
+    font-size: 0.875rem;
+    color: #7f8c8d;
+    margin-bottom: 16px;
+}
+
+.edit-form-row {
+    display: flex;
+    gap: 16px;
+}
+
+.edit-modal-content input,
+.edit-modal-content select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #dcdfe6;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    color: #34495e;
+    outline: none;
+    transition: border-color 0.2s ease-in-out;
+}
+
+.edit-modal-content input:focus,
+.edit-modal-content select:focus {
+    border-color: #3498db;
+}
+
+.modal-content select {
+    appearance: none;
+    background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cGF0aCBmaWxsPSIjNzY3Njc2IiBkPSJNNS41OTggNy42NjhsMi40MDMtMi4zMDQgMi40MDMgMi4zMDQtMS4yMDMgMS4yMzRMOC4wMDAgOC4zNjQgNi42MDEgOS4wNTIgNS40MDQgOC4zNjRsLTEuMjAzLTEuMjM2eiIvPjwvc3ZnPg==") no-repeat right 12px center;
+    background-color: white;
+}
+
+.edit-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.btn-save {
+    padding: 10px 24px;
+    background-color: #273c75;
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.btn-save:hover {
+    background-color: #2980b9;
+}
+
+.btn-cancel {
+    padding: 10px 24px;
+    background-color: #273c75;
+    color: #ffffff;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: 1px solid #dcdfe6;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+.btn-cancel:hover {
+    color: #34495e;
+    border-color: #b2bec3;
 }
