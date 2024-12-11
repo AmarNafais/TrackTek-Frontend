@@ -5,6 +5,7 @@ import SignUp from "../components/login/sign-up.js"
 import ForgotPassword from "../components/login/forgot-password.js"
 import VerifyCode from "../components/login/verify-code.js"
 import SetPassword from "../components/login/set-password.js"
+import Dashboard from "../components/dashboard/index.js"
 const AppRoutes = () => {
   return (
     <Router>
@@ -14,6 +15,7 @@ const AppRoutes = () => {
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/verifycode" element={<VerifyCode />} />
         <Route path="/setpassword" element={<SetPassword />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </Router>
   );
