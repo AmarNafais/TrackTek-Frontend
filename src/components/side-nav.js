@@ -17,42 +17,43 @@ import {
 import {
   HiDocumentReport
 } from "react-icons/hi";
+import { NavLink } from 'react-router-dom';
 
 const Sidebar = () => {
   return (
     <div className="sidebar">
-      <div className="menu-item active">
+      <NavLink to="/dashboard" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
         <MdSpaceDashboard className="side-nav-icons" />
         <span>Dashboard</span>
-      </div>
-      <div className="menu-item" a href='/user'>
+      </NavLink>
+      <NavLink to="/user" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
         <HiMiniUsers className="side-nav-icons" />
         <span>Users</span>
-      </div>
-      <div className="menu-item">
+      </NavLink>
+      <NavLink to="/inventory" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
         <MdInventory className="side-nav-icons" />
         <span>Inventory</span>
-      </div>
-      <div className="menu-item">
+      </NavLink>
+      <NavLink to="/orders" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
         <FaTasks className="side-nav-icons" />
         <span>Orders</span>
-      </div>
-      <div className="menu-item">
+      </NavLink>
+      <NavLink to="/garment" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
         <GiClothes className="side-nav-icons" />
         <span>Garment</span>
-      </div>
-      <div className="menu-item">
+      </NavLink>
+      <NavLink to="/machine" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
         <GiSewingMachine className="side-nav-icons" />
         <span>Machine</span>
-      </div>
-      <div className="menu-item">
+      </NavLink>
+      <NavLink to="/costs" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
         <FaMoneyCheckAlt className="side-nav-icons" />
         <span>Costs</span>
-      </div>
-      <div className="menu-item">
+      </NavLink>
+      <NavLink to="/reports" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
         <HiDocumentReport className="side-nav-icons" />
         <span>Reports</span>
-      </div>
+      </NavLink>
     </div>
   );
 };

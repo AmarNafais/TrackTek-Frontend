@@ -10,7 +10,7 @@ const Header = () => {
     email: 'yourname@gmail.com',
     mobileNumber: '+44 77 859 6598',
     role: 'Manager',
-    profilePicture: 'https://via.placeholder.com/80',
+    profilePicture: 'https://i.imgur.com/KfATw32.png',
   });
 
   const handleAvatarClick = () => {

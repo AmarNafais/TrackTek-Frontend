@@ -751,6 +751,8 @@ body {
     border-radius: 8px;
     transition: background-color 0.3s ease, color 0.3s ease;
     cursor: pointer;
+    text-decoration: none;
+    color: #273c75;
 }
 
 .menu-item:hover {
@@ -761,6 +763,7 @@ body {
 .menu-item.active {
     background-color: #e8f0fe;
     color: #2B3A8E;
+    text-decoration: none;
 }
 
 .menu-item .side-nav-icons {
@@ -813,6 +816,8 @@ body {
 
 .notification-icon {
     position: relative;
+    font-size: 25px;
+    margin-top: 10px;
 }
 
 .bell-icon {
@@ -823,13 +828,12 @@ body {
 .notification-icon::after {
     content: "";
     position: absolute;
-    top: -5px;
-    right: -5px;
-    width: 10px;
-    height: 10px;
+    top: 1px;
+    right: 1px;
+    width: 8px;
+    height: 8px;
     background-color: red;
     border-radius: 50%;
-    border: 2px solid white;
 }
 
 .user-info {
