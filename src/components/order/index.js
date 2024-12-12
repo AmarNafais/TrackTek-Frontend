@@ -9,11 +9,11 @@ const OrderPage = () => {
   const [showAddOrderModal, setShowAddOrderModal] = useState(false);
   const [editOrder, setEditOrder] = useState(null);
   const [orders, setOrder] = useState([
-    { id: 1, customerName: "Jack Sparrow", garmentType: "jacksparrow@gmail.com", quantity: "Manager",status: "Manager",date: "Manager" },
-    { id: 2, customerName: "Henry Danford", garmentType: "henrydanford@gmail.com", quantity: "Stock Manager",status: "Manager",date: "Manager"  },
-    { id: 3, customerName: "Larry Hills", garmentType: "larryhills@gmail.com", quantity: "Staff",status: "Manager",date: "Manager"  },
-    { id: 4, customerName: "Benjamin Franklin", garmentType: "benjaminfranklin@gmail.com", quantity: "Staff",status: "Manager",date: "Manager"  },
-    { id: 5, customerName: "John Keels", garmentType: "johnkeels@gmail.com", quantity: "Manager",status: "Manager",date: "Manager"  },
+    { id: 1, customerName: "Lindsey Shroud", garmentType: "Uniforms", quantity: 5, status: "Pending", date: "20-03-2024" },
+    { id: 2, customerName: "Sarah Brown", garmentType: "Socks", quantity: 25, status: "Completed", date: "20-03-2024"  },
+    { id: 3, customerName: "Michael Owen", garmentType: "Shirts", quantity: 15, status: "Dispatched", date: "20-03-2024"  },
+    { id: 4, customerName: "Mary Jane", garmentType: "Shirts", quantity: 10, status: "Pending", date: "20-03-2024"  },
+    { id: 5, customerName: "Peter Doodle", garmentType: "Uniforms", quantity: 8, status: "Completed", date: "20-03-2024"  },
   ]);
 
   const handleDelete = (id) => {
@@ -38,10 +38,10 @@ const OrderPage = () => {
       <main className="main-content">
         <Header />
         <div className="users-page">
-          <h2>Inventory</h2>
+          <h2>Orders</h2>
           <div className="users-table-container">
             <button className="add-user-button" onClick={() => setShowAddOrderModal(true)}>
-              Add Item
+              Add Order
             </button>
             {showAddOrderModal && (
               <AddOrderModal

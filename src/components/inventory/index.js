@@ -2,34 +2,34 @@ import React, { useState } from "react";
 import Sidebar from "../side-nav";
 import Header from "../header";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
-import AddUserModal from "./add-inventory-modal";
-import EditUserModal from "./edit-inventory-modal";
+import AddInventoryModal from "./add-inventory-modal";
+import EditInventoryModal from "./edit-inventory-modal";
 
-const UsersPage = () => {
-  const [showAddUserModal, setShowAddUserModal] = useState(false);
-  const [editUser, setEditUser] = useState(null);
-  const [users, setUsers] = useState([
-    { id: 1, fullName: "Jack Sparrow", email: "jacksparrow@gmail.com", role: "Manager" },
-    { id: 2, fullName: "Henry Danford", email: "henrydanford@gmail.com", role: "Stock Manager" },
-    { id: 3, fullName: "Larry Hills", email: "larryhills@gmail.com", role: "Staff" },
-    { id: 4, fullName: "Benjamin Franklin", email: "benjaminfranklin@gmail.com", role: "Staff" },
-    { id: 5, fullName: "John Keels", email: "johnkeels@gmail.com", role: "Manager" },
+const InventoryPage = () => {
+  const [showAddInventoryModal, setShowAddInventoryModal] = useState(false);
+  const [editInventory, setEditInventory] = useState(null);
+  const [items, setItems] = useState([
+    { id: 1, itemName: "Nike Socks", quantity: 4, stockLevel: "56%" },
+    { id: 2, itemName: "Addidas Socks", quantity: 7, stockLevel: "84%" },
+    { id: 3, itemName: "Pedlar Shirts", quantity: 8, stockLevel: "5%" },
+    { id: 4, itemName: "Mariyul Uniforms", quantity: 4, stockLevel: "32%" },
+    { id: 5, itemName: "Pedlar Socks", quantity: 8, stockLevel: "66%" },
   ]);
 
   const handleDelete = (id) => {
-    const updatedUsers = users.filter((user) => user.id !== id);
-    setUsers(updatedUsers);
+    const updatedItems = items.filter((item) => item.id !== id);
+    setItems(updatedItems);
   };
 
-  const handleAddUser = (newUser) => {
-    setUsers([...users, newUser]);
+  const handleAddItem = (newItem) => {
+    setItems([...items, newItem]);
   };
 
-  const handleSaveUser = (updatedUser) => {
-    const updatedUsers = users.map((user) =>
-      user.id === updatedUser.id ? updatedUser : user
+  const handleSaveItem = (updatedItem) => {
+    const updatedItems = items.map((item) =>
+      item.id === updatedItem.id ? updatedItem : item
     );
-    setUsers(updatedUsers);
+    setItems(updatedItems);
   };
 
   return (
@@ -40,39 +40,39 @@ const UsersPage = () => {
         <div className="users-page">
           <h2>Inventory</h2>
           <div className="users-table-container">
-            <button className="add-user-button" onClick={() => setShowAddUserModal(true)}>
+            <button className="add-user-button" onClick={() => setShowAddInventoryModal(true)}>
               Add Item
             </button>
-            {showAddUserModal && (
-              <AddUserModal
-                onClose={() => setShowAddUserModal(false)}
-                onAddUser={handleAddUser}
+            {showAddInventoryModal && (
+              <AddInventoryModal
+                onClose={() => setShowAddInventoryModal(false)}
+                onAddItem={handleAddItem}
               />
             )}
             <table className="users-table">
               <thead>
                 <tr>
                   <th>Id</th>
-                  <th>Full Name</th>
-                  <th>Email</th>
-                  <th>Role</th>
+                  <th>Item Name</th>
+                  <th>Quantity</th>
+                  <th>Stock Level</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-                {users.map((user) => (
-                  <tr key={user.id}>
-                    <td>{user.id}</td>
-                    <td>{user.fullName}</td>
-                    <td>{user.email}</td>
-                    <td>{user.role}</td>
+                {items.map((item) => (
+                  <tr key={item.id}>
+                    <td>{item.id}</td>
+                    <td>{item.itemName}</td>
+                    <td>{item.quantity}</td>
+                    <td>{item.stockLevel}</td>
                     <td>
-                      <button className="action-button edit-button" onClick={() => setEditUser(user)}>
+                      <button className="action-button edit-button" onClick={() => setEditInventory(item)}>
                         <FaEdit />
                       </button>
                       <button
                         className="action-button delete-button"
-                        onClick={() => handleDelete(user.id)}
+                        onClick={() => handleDelete(item.id)}
                       >
                         <FaTrashAlt />
                       </button>
@@ -81,11 +81,11 @@ const UsersPage = () => {
                 ))}
               </tbody>
             </table>
-            {editUser && (
-              <EditUserModal
-                user={editUser}
-                onClose={() => setEditUser(null)}
-                onSave={handleSaveUser}
+            {editInventory && (
+              <EditInventoryModal
+                item={editInventory}
+                onClose={() => setEditInventory(null)}
+                onSave={handleSaveItem}
               />
             )}
           </div>
@@ -95,4 +95,4 @@ const UsersPage = () => {
   );
 };
 
-export default UsersPage;
+export default InventoryPage;
