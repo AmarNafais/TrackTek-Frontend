@@ -4,7 +4,7 @@ import bluetexLogo from "../../assets/bluetex-logo.svg";
 
 const Login = () => {
   return (
-    <div className="container">
+    <div className="login-container">
       <div className="login-wrapper">
         <div className="login-left-section">
           <div className="login-form">
@@ -12,27 +12,27 @@ const Login = () => {
             <h1>Login</h1>
             <p>Login to access your bluetex account</p>
             <form>
-              <div className="form-group">
+              <div className="login-form-group">
                 <label>Email</label>
                 <input type="email" placeholder="example@gmail.com" className="login-input"/>
               </div>
-              <div className="form-group">
+              <div className="login-form-group">
                 <label>Password</label>
                 <input type="password" placeholder="************" className="login-input"/>
               </div>
-              <div className="button-group">
-                <div class="remember-me-container">
+              <div className="login-button-group">
+                <div class="login-remember-me-container">
                   <input type="checkbox" id="rememberMe" />
                   <label for="rememberMe">Remember me</label>
                 </div>
-                <a href="/forgotpassword" className="forget-password-link">
+                <a href="/forgotpassword" className="login-forget-password-link">
                   Forgot Password?
                 </a>
               </div>
-              <button type="submit">Login</button>
+              <button className="login-button" type="submit">Login</button>
             </form>
-            <div className="signup">
-              Don’t have an account? <a href="/signup" className="link">Sign up</a>
+            <div className="login-signup">
+              Don’t have an account? <a href="/signup" className="login-sign-up-link">Sign up</a>
             </div>
           </div>
         </div>

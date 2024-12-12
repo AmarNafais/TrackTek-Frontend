@@ -9,7 +9,7 @@ body {
 
 /* login.css */
 
-.container {
+.login-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -60,11 +60,11 @@ body {
     color: #666666;
 }
 
-.form-group {
+.login-form-group {
     margin-bottom: 1rem;
 }
 
-label {
+.login-form-group label {
     display: block;
     margin-bottom: 0.5rem;
     color: #333333;
@@ -77,32 +77,32 @@ label {
     border-radius: 5px;
 }
 
-.button-group {
+.login-button-group {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
 }
 
-.remember-me-container {
+.login-remember-me-container {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     margin-bottom: 5px;
 }
 
-.remember-me-container input[type="checkbox"] {
+.login-remember-me-container input[type="checkbox"] {
     margin: 0;
     width: auto;
 }
 
-.remember-me-container label {
+.login-remember-me-container label {
     margin: 0;
     line-height: 1;
     font-size: 13px;
 }
 
-button {
+.login-button {
     background-color: #2B3A8E;
     color: #ffffff;
     border: none;
@@ -114,11 +114,11 @@ button {
     margin-top: -15px;
 }
 
-button:hover {
+.login-button:hover {
     background-color: #155bb5;
 }
 
-.forget-password-link {
+.login-forget-password-link {
     text-decoration: none;
     color: #2B3A8E;
     font-size: 0.8rem;
@@ -126,14 +126,24 @@ button:hover {
     margin-right: 100px;
 }
 
-.forget-password-link:hover {
+.login-forget-password-link:hover {
     text-decoration: underline;
 }
 
-.signup {
+.login-signup {
     margin-top: 1rem;
     font-size: 0.9rem;
     color: #666666;
+}
+
+.login-signup .login-sign-up-link{
+    text-decoration: none;
+    color: #2B3A8E;
+    font-size: 0.85rem;
+}
+
+.login-signup .login-sign-up-link:hover{
+    text-decoration: underline;
 }
 
 .login-form img {
@@ -142,61 +152,79 @@ button:hover {
 
 /* sign-up.css */
 
-.signup-form h1 {
+.sign-up-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.sign-up-wrapper{
+    display: flex;
+    width: 70%;
+    max-width: 1200px;
+    background-color: #F0F6FF;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.sign-up-form h1 {
     font-size: 1.5rem;
     margin-bottom: -10px;
     color: #333333;
 }
 
-.signup-form p {
+.sign-up-form p {
     font-size: 15px;
     margin-bottom: 13px;
     color: #666666;
 }
 
-.signup-form img {
+.sign-up-form img {
     height: 60px;
     margin-left: 290px;
 }
 
-.row {
+.sign-up-row {
     display: flex;
     gap: 2rem;
     margin-bottom: 5px;
 }
 
-.row .form-group {
+.sign-up-form-group {
     flex: 1;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
-.privacy-policy-container {
+.sign-up-privacy-policy-container {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
-.privacy-policy-container input[type="checkbox"] {
-    margin: 0;
+.sign-up-privacy-policy-container input[type="checkbox"] {
     width: auto;
 }
 
-.privacy-policy-container label {
+.sign-up-privacy-policy-container label {
     margin: 0;
     line-height: 1;
     font-size: 14px;
 }
 
-.terms-link {
+.sign-up-terms-link {
     color: #2B3A8E;
     text-decoration: none;
 }
 
-.terms-link:hover {
+.sign-up-terms-link:hover {
     text-decoration: underline;
 }
 
-.create-account-button {
+.sign-up-create-account-button {
     background-color: #2B3A8E;
     color: #ffffff;
     border: none;
@@ -208,8 +236,7 @@ button:hover {
     box-sizing: border-box;
 }
 
-
-.create-account-button:hover {
+.sign-up-create-account-button:hover {
     background-color: #155bb5;
 }
 
@@ -235,6 +262,20 @@ button:hover {
     padding: 10px;
     border: 1px solid #cccccc;
     border-radius: 5px;
+}
+
+.sign-up {
+    margin-top: 8px;
+    font-size: 15px;
+}
+
+.sign-up .sign-up-link{
+    text-decoration: none;
+    color: #273c75;
+}
+
+.sign-up .sign-up-link:hover{
+    text-decoration: underline;
 }
 
 /* forgot-password.css */
