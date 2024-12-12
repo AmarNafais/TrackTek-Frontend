@@ -34,7 +34,7 @@ const Sidebar = () => {
         <MdInventory className="side-nav-icons" />
         <span>Inventory</span>
       </NavLink>
-      <NavLink to="/orders" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
+      <NavLink to="/order" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
         <FaTasks className="side-nav-icons" />
         <span>Orders</span>
       </NavLink>

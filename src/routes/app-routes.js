@@ -8,6 +8,7 @@ import SetPassword from "../components/login/set-password.js"
 import Dashboard from "../components/dashboard/index.js"
 import User from "../components/user/index.js"
 import Inventory from "../components/inventory/index.js"
+import Order from "../components/order/index.js"
 const AppRoutes = () => {
   return (
     <Router>
@@ -20,6 +21,7 @@ const AppRoutes = () => {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/user" element={<User />} />
         <Route path="/inventory" element={<Inventory />} />
+        <Route path="/order" element={<Order />} />
       </Routes>
     </Router>
   );
