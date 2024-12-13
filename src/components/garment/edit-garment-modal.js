@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 
-const EditOrderModal = ({ order, onClose, onSave }) => {
+const EditGarmentModal = ({ garment, onClose, onSave }) => {
     const [formData, setFormData] = useState({
-        customerName: order.customerName,
-        garmentType: order.garmentType,
-        quantity: order.quantity,
-        status: order.status,
-        date: order.date,
+        type: garment.type,
+        size: garment.size,
+        color: garment.color,
+        quantity: garment.quantity,
+        image: garment.image,
     });
 
     const handleChange = (e) => {
@@ -14,40 +14,47 @@ const EditOrderModal = ({ order, onClose, onSave }) => {
     };
 
     const handleSave = () => {
-        const updatedOrder = {
-            ...order,
-            customerName: formData.customerName,
-            garment: formData.garment,
+        const updatedGarment = {
+            ...garment,
+            type: formData.type,
+            size: formData.size,
+            color: formData.color,
             quantity: formData.quantity,
-            status: formData.status,
-            date: formData.date,
+            image: formData.image,
         };
-        onSave(updatedOrder);
+        onSave(updatedGarment);
         onClose();
     };
 
     return (
         <div className="edit-modal">
             <div className="edit-modal-content">
-                <h2>Edit Order</h2>
-                <p>ID - {order.id}</p>
+                <h2>Edit Garment</h2>
+                <p>ID - {garment.id}</p>
                 <div className="edit-form-row">
                     <input
                         type="text"
-                        name="customerName"
-                        placeholder="Customer Name *"
-                        value={formData.customerName}
+                        name="type"
+                        placeholder="Type *"
+                        value={formData.type}
                         onChange={handleChange}
                     />
                     <input
                         type="text"
-                        name="garmentType"
-                        placeholder="Garment Type *"
-                        value={formData.garmentType}
+                        name="size"
+                        placeholder="Size *"
+                        value={formData.size}
                         onChange={handleChange}
                     />
                 </div>
                 <div className="edit-form-row">
+                    <input
+                        type="text"
+                        name="color"
+                        placeholder="Color *"
+                        value={formData.color}
+                        onChange={handleChange}
+                    />
                     <input
                         type="number"
                         name="quantity"
@@ -55,20 +62,19 @@ const EditOrderModal = ({ order, onClose, onSave }) => {
                         value={formData.quantity}
                         onChange={handleChange}
                     />
-                    <select
-                        name="status"
-                        value={formData.status}
+                </div>
+                <div className="edit-form-row">
+                    <input
+                        type="text"
+                        name="image"
+                        placeholder="Image *"
+                        value={formData.image}
                         onChange={handleChange}
-                    >
-                        <option value="">Select Status</option>
-                        <option value="Pending">Pending</option>
-                        <option value="Dispatched">Dispatched</option>
-                        <option value="Completed">Completed</option>
-                    </select>
+                    />
                 </div>
                 <div className="edit-modal-actions">
                     <button className="btn-save" onClick={handleSave}>
-                        Edit Order
+                        Edit Garment
                     </button>
                     <button className="btn-cancel" onClick={onClose}>
                         Cancel
@@ -79,4 +85,4 @@ const EditOrderModal = ({ order, onClose, onSave }) => {
     );
 };
 
-export default EditOrderModal;
+export default EditGarmentModal;

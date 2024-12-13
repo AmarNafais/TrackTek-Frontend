@@ -29,7 +29,7 @@ const OrderPage = () => {
     const updatedOrders = orders.map((order) =>
         order.id === updatedOrder.id ? updatedOrder : order
     );
-    setOrder(updatedOrder);
+    setOrder(updatedOrders);
   };
 
   return (

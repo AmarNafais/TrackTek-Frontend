@@ -1,7 +1,7 @@
 import React from 'react';
-import bluetexLogo from "../assets/bluetex-logo.svg";
+import bluetexLogo from "../../assets/bluetex-logo.svg";
 import { CiSearch, CiBellOn } from "react-icons/ci";
-import UserProfileModal from './dashboard/user-profile-modal.js';
+import UserProfileModal from './user-profile-modal.js';
 
 const Header = () => {
   const [showUserProfileModal, setShowUserProfileModal] = React.useState(false);

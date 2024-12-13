@@ -9,6 +9,9 @@ import Dashboard from "../components/dashboard/index.js"
 import User from "../components/user/index.js"
 import Inventory from "../components/inventory/index.js"
 import Order from "../components/order/index.js"
+import Garment from "../components/garment/index.js"
+import Machine from "../components/machine/index.js"
+
 const AppRoutes = () => {
   return (
     <Router>
@@ -22,6 +25,8 @@ const AppRoutes = () => {
         <Route path="/user" element={<User />} />
         <Route path="/inventory" element={<Inventory />} />
         <Route path="/order" element={<Order />} />
+        <Route path="/garment" element={<Garment />} />
+        <Route path="/machine" element={<Machine />} />
       </Routes>
     </Router>
   );
