@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from "react";
 import bluetexLogo from "../../assets/bluetex-logo.svg";
 import { CiSearch, CiBellOn } from "react-icons/ci";
 import UserProfileModal from './user-profile-modal.js';
+import NotificationModal from "./notification-modal.js";
 
 const Header = () => {
   const [showUserProfileModal, setShowUserProfileModal] = React.useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
   const [currentUser, setCurrentUser] = React.useState({
     name: 'Your name',
     email: 'yourname@gmail.com',
@@ -25,6 +27,10 @@ const Header = () => {
     setCurrentUser(updatedUser);
   };
 
+  const toggleNotifications = () => {
+    setShowNotifications(!showNotifications);
+  };
+
   return (
     <header className="dashboard-header">
       <div className="header-left">
@@ -41,9 +47,12 @@ const Header = () => {
             className="search-bar"
           />
         </div>
-        <div className="notification-icon">
+        <div className="notification-icon" onClick={toggleNotifications}>
           <CiBellOn />
         </div>
+        {showNotifications && (
+          <NotificationModal onClose={() => setShowNotifications(false)} />
+        )}
         <div className="user-info">
           <span className="user-name">{currentUser.name}</span>
           <span className="user-location">{currentUser.email}</span>

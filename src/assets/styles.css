@@ -1497,3 +1497,114 @@ body {
     width: 104.5%;
     border-radius: 5px;
 }
+
+/* notification-modal.css */
+
+.notification-modal-container {
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    z-index: 200;
+    animation: slideDown 0.3s ease-out;
+}
+
+.notification-modal {
+    width: 320px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    font-family: Arial, sans-serif;
+}
+
+.notification-header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.notification-header {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.close-notification-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #2B3A8E;
+}
+
+.notification-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.notification-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 8px;
+    border-radius: 5px;
+    transition: background-color 0.2s;
+}
+
+.notification-item:hover {
+    background-color: #f9f9f9;
+}
+
+.notification-content {
+    flex-grow: 1;
+}
+
+.notification-content p {
+    margin: 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.notification-date {
+    font-size: 12px;
+    color: gray;
+    margin-top: 5px;
+}
+
+.dismiss-notification-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #2B3A8E;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    border-radius: 50%;
+}
+
+.dismiss-notification-btn:hover {
+    background-color: #f0f0f0;
+}
+
+.no-notifications {
+    text-align: center;
+    font-size: 14px;
+    color: gray;
+    margin-top: 20px;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
