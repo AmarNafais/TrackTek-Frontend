@@ -46,7 +46,7 @@ const Sidebar = () => {
         <GiSewingMachine className="side-nav-icons" />
         <span>Machine</span>
       </NavLink>
-      <NavLink to="/costs" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
+      <NavLink to="/cost" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
         <FaMoneyCheckAlt className="side-nav-icons" />
         <span>Costs</span>
       </NavLink>

@@ -11,6 +11,7 @@ import Inventory from "../components/inventory/index.js"
 import Order from "../components/order/index.js"
 import Garment from "../components/garment/index.js"
 import Machine from "../components/machine/index.js"
+import Cost from "../components/cost/index.js"
 
 const AppRoutes = () => {
   return (
@@ -27,6 +28,7 @@ const AppRoutes = () => {
         <Route path="/order" element={<Order />} />
         <Route path="/garment" element={<Garment />} />
         <Route path="/machine" element={<Machine />} />
+        <Route path="/cost" element={<Cost />} />
       </Routes>
     </Router>
   );
