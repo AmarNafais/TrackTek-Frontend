@@ -3,7 +3,6 @@ import Sidebar from "../side-nav";
 import Header from "../header";
 import productionChart from "../../assets/production-chart.svg";
 import earningSummaryChart from "../../assets/earning-summary-chart.svg";
-import "./styles.css";
 
 const CostsPage = () => {
     return (
