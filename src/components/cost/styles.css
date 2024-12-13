@@ -1,4 +1,4 @@
-.content-container {
+.cost-content-container {
     padding: 20px;
     padding-top: 50px;
     font-family: Arial, sans-serif;
@@ -12,24 +12,24 @@ h2 {
     margin-bottom: 10px;
 }
 
-.date {
+.cost-date {
     font-size: 14px;
     color: #718096;
     margin-bottom: 20px;
 }
 
-.content-sections {
+.cost-content-sections {
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
 
-.stats-container {
+.cost-stats-container {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-.stat-card {
+.cost-stat-card {
     background: white;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
@@ -42,14 +42,14 @@ h2 {
     justify-content: center;
 }
 
-.stat-card h3 {
+.cost-stat-card h3 {
     font-size: 14px;
     margin-top: -30px;
     margin-bottom: -15px;
     color: #4a5568;
 }
 
-.value {
+.cost-value {
     margin-bottom: -25px;
     font-size: 25px;
     font-weight: bold;
@@ -59,25 +59,25 @@ h2 {
     gap: 8px;
 }
 
-.change {
+.cost-change {
     font-size: 14px;
 }
 
-.change.up {
+.cost-change.up {
     color: #38a169;
 }
 
-.change.down {
+.cost-change.down {
     color: #e53e3e;
 }
 
-.details {
+.cost-details {
     margin-bottom: -25px;
     font-size: 13px;
     color: #718096;
 }
 
-.production-chart {
+.cost-production-chart {
     margin-top: -25px;
     height: auto;
     width: 340px;
@@ -85,7 +85,7 @@ h2 {
     border-radius: 8px;
 }
 
-.chart-image {
+.cost-chart-image {
     width: 100%;
     border-radius: 5px;
     margin-top: 10px;
@@ -97,21 +97,21 @@ h2 {
     gap: 20px;
 }
 
-.filter-section {
+.cost-filter-section {
     margin-top: -55px;
     margin-left: 600px;
     display: flex;
     gap: 10px;
 }
 
-.filter-section select,
-.filter-section input {
+.cost-filter-section select,
+.cost-filter-section input {
     padding: 8px;
     border: 1px solid #e2e8f0;
     border-radius: 4px;
 }
 
-.check-button {
+.cost-check-button {
     padding: 8px 16px;
     background-color: #2B3A8E;
     color: white;
@@ -120,11 +120,11 @@ h2 {
     cursor: pointer;
 }
 
-.check-button:hover {
+.cost-check-button:hover {
     background-color: #2b6cb0;
 }
 
-.customer-status {
+.cost-customer-status {
     background: white;
     height: 271px;
     border: 1px solid #e2e8f0;
@@ -133,49 +133,49 @@ h2 {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.customer-status h3 {
+.cost-customer-status h3 {
     font-size: 18px;
     margin-bottom: 10px;
 }
 
-.customer-status table {
+.cost-customer-status table {
     width: 100%;
     border-collapse: collapse;
 }
 
-.customer-status th,
-.customer-status td {
+.cost-customer-status th,
+.cost-customer-status td {
     text-align: left;
     padding: 10px;
     border-bottom: 1px solid #e2e8f0;
 }
 
-.customer-status th {
+.cost-customer-status th {
     background-color: #f7fafc;
     font-size: 14px;
 }
 
-.customer-status td {
+.cost-customer-status td {
     font-size: 14px;
     color: #4a5568;
 }
 
-.status {
+.cost-status {
     padding: 4px 8px;
     border-radius: 4px;
     color: white;
     font-size: 12px;
 }
 
-.status.completed {
+.cost-status.completed {
     background-color: #38a169;
 }
 
-.status.pending {
+.cost-status.pending {
     background-color: #e53e3e;
 }
 
-.details-button {
+.cost-details-button {
     padding: 5px 10px;
     background-color: #2B3A8E;
     color: white;
@@ -184,23 +184,23 @@ h2 {
     cursor: pointer;
 }
 
-.details-button:hover {
+.cost-details-button:hover {
     background-color: #2b6cb0;
 }
 
-.earning-summary {
+.cost-earning-summary {
     margin-left: -42px;
     margin-top: -40px;
     border-radius: 8px;
     padding: 15px;
 }
 
-.earning-summary h3 {
+.cost-earning-summary h3 {
     font-size: 18px;
     margin-bottom: 10px;
 }
 
-.earning-summary .chart-image {
+.cost-earning-summary .chart-image {
     width: 104.5%;
     border-radius: 5px;
 }
