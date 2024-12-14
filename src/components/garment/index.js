@@ -1,19 +1,22 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import Sidebar from "../side-nav";
 import Header from "../header";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { SlOptionsVertical } from "react-icons/sl";
 import AddGarmentModal from "./add-garment-modal";
 import EditGarmentModal from "./edit-garment-modal";
 
 const GarmentsPage = () => {
   const [showAddGarmentModal, setShowAddGarmentModal] = useState(false);
   const [editGarment, setEditGarment] = useState(null);
+  const navigate = useNavigate();
   const [garments, setGarments] = useState([
-    { id: 1, type: "Shirts", size: "5", color: "Red", quantity: 15, image: "www.shirts.com" },
-    { id: 2, type: "Socks", size: "L", color: "Blue", quantity: 20, image: "www.socks.com" },
-    { id: 3, type: "Socks", size: "CM", color: "Yellow", quantity: 25, image: "www.socks.com" },
-    { id: 4, type: "Pants", size: "34", color: "Black", quantity: 17, image: "www.pants.com" },
-    { id: 5, type: "Kids Socks", size: "XS", color: "Pink", quantity: 25, image: "www.kidssocks.com" },
+    { id: 1, name: "Shirt", design: "www.shirts.com", category: "Casual", sizes: "1-9", price: "Rs. 100", status: "Available" },
+    { id: 2, name: "Pant", design: "www.shirts.com", category: "Sportswear", sizes: "1-9", price: "Rs. 500", status: "Available" },
+    { id: 3, name: "Skirt", design: "www.shirts.com", category: "Formal", sizes: "1-9", price: "Rs. 200", status: "Discontinued" },
+    { id: 4, name: "Socks", design: "www.shirts.com", category: "Accessories", sizes: "XS, S, M, L, XL", price: "Rs. 120", status: "Available" },
+    { id: 5, name: "Kids Socks", design: "www.shirts.com", category: "Casual", sizes: "1-9", price: "Rs. 150", status: "Discontinued" },
   ]);
 
   const handleDelete = (id) => {
@@ -30,6 +33,10 @@ const GarmentsPage = () => {
       garment.id === updatedGarment.id ? updatedGarment : garment
     );
     setGarments(updatedGarments);
+  };
+
+  const handleMoreGarment = () => {
+    navigate('/garment-more');
   };
 
   return (
@@ -53,23 +60,25 @@ const GarmentsPage = () => {
               <thead>
                 <tr>
                   <th>Id</th>
-                  <th>Type</th>
-                  <th>Size</th>
-                  <th>Color</th>
-                  <th>Quantity</th>
-                  <th>Image</th>
-                  <th>Action</th>
+                  <th>Name</th>
+                  <th>Design</th>
+                  <th>Category</th>
+                  <th>Sizes</th>
+                  <th>Price</th>
+                  <th>Status</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {garments.map((garment) => (
                   <tr key={garment.id}>
                     <td>{garment.id}</td>
-                    <td>{garment.type}</td>
-                    <td>{garment.size}</td>
-                    <td>{garment.color}</td>
-                    <td>{garment.quantity}</td>
-                    <td>{garment.image}</td>
+                    <td>{garment.name}</td>
+                    <td>{garment.design}</td>
+                    <td>{garment.category}</td>
+                    <td>{garment.sizes}</td>
+                    <td>{garment.price}</td>
+                    <td>{garment.status}</td>
                     <td>
                       <button className="action-button edit-button" onClick={() => setEditGarment(garment)}>
                         <FaEdit />
@@ -79,6 +88,9 @@ const GarmentsPage = () => {
                         onClick={() => handleDelete(garment.id)}
                       >
                         <FaTrashAlt />
+                      </button>
+                      <button className="action-button more-button" onClick={handleMoreGarment}>
+                        <SlOptionsVertical />
                       </button>
                     </td>
                   </tr>

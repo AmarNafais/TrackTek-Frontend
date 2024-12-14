@@ -9,11 +9,11 @@ const InventoryPage = () => {
   const [showAddInventoryModal, setShowAddInventoryModal] = useState(false);
   const [editInventory, setEditInventory] = useState(null);
   const [items, setItems] = useState([
-    { id: 1, itemName: "Nike Socks", quantity: 4, stockLevel: "56%" },
-    { id: 2, itemName: "Addidas Socks", quantity: 7, stockLevel: "84%" },
-    { id: 3, itemName: "Pedlar Shirts", quantity: 8, stockLevel: "5%" },
-    { id: 4, itemName: "Mariyul Uniforms", quantity: 4, stockLevel: "32%" },
-    { id: 5, itemName: "Pedlar Socks", quantity: 8, stockLevel: "66%" },
+    { id: 1, name: "Cotton", unitCost: "Rs. 100", quantity: 5, unitOfMeasurement: "cm" },
+    { id: 2, name: "Yarn", unitCost: "Rs. 120", quantity: 15, unitOfMeasurement: "g" },
+    { id: 3, name: "Nilon", unitCost: "Rs. 75", quantity: 8, unitOfMeasurement: "kg" },
+    { id: 4, name: "Rubber", unitCost: "Rs. 150", quantity: 6, unitOfMeasurement: "mm" },
+    { id: 5, name: "Cotton", unitCost: "Rs. 200", quantity: 4, unitOfMeasurement: "m" },
   ]);
 
   const handleDelete = (id) => {
@@ -53,9 +53,10 @@ const InventoryPage = () => {
               <thead>
                 <tr>
                   <th>Id</th>
-                  <th>Item Name</th>
+                  <th>Name</th>
+                  <th>Unit Cost</th>
                   <th>Quantity</th>
-                  <th>Stock Level</th>
+                  <th>Unit of Measurement</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -63,9 +64,10 @@ const InventoryPage = () => {
                 {items.map((item) => (
                   <tr key={item.id}>
                     <td>{item.id}</td>
-                    <td>{item.itemName}</td>
+                    <td>{item.name}</td>
+                    <td>{item.unitCost}</td>
                     <td>{item.quantity}</td>
-                    <td>{item.stockLevel}</td>
+                    <td>{item.unitOfMeasurement}</td>
                     <td>
                       <button className="action-button edit-button" onClick={() => setEditInventory(item)}>
                         <FaEdit />

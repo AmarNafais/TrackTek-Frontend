@@ -2,11 +2,12 @@ import React, { useState } from "react";
 
 const AddGarmentModal = ({ onClose, onAddGarment }) => {
   const [formData, setFormData] = useState({
-    type: "",
-    size: "",
-    color: "",
-    quantity: "",
-    image: "",
+    name: "",
+    design: "",
+    category: "",
+    sizes: "",
+    price: "",
+    status: "",
   });
 
   const handleInputChange = (e) => {
@@ -17,11 +18,12 @@ const AddGarmentModal = ({ onClose, onAddGarment }) => {
   const handleAddGarment = () => {
 
     const newGarment = {
-      type: formData.type,
-      size: formData.size,
-      color: formData.color,
-      quantity: formData.quantity,
-      image: formData.image,
+      name: formData.name,
+      design: formData.design,
+      category: formData.category,
+      sizes: formData.sizes,
+      price: formData.price,
+      status: formData.status,
     };
     onAddGarment(newGarment);
     onClose();
@@ -41,44 +43,58 @@ const AddGarmentModal = ({ onClose, onAddGarment }) => {
           <div className="form-grid">
             <input
               type="text"
-              name="type"
-              placeholder="Type *"
-              value={formData.type}
+              name="name"
+              placeholder="Name *"
+              value={formData.name}
               onChange={handleInputChange}
               required
             />
             <input
               type="text"
-              name="size"
-              placeholder="Size *"
-              value={formData.size}
+              name="design"
+              placeholder="Design *"
+              value={formData.design}
+              onChange={handleInputChange}
+              required
+            />
+            <select
+              name="category"
+              value={formData.category}
+              onChange={handleInputChange}
+              required
+            >
+              <option value="">Select Category</option>
+              <option value="Casual">Casual</option>
+              <option value="Sportswear">Sportswear</option>
+              <option value="Formal">Formal</option>
+              <option value="Accessories">Accessories</option>
+            </select>
+            <input
+              type="text"
+              name="sizes"
+              placeholder="Sizes *"
+              value={formData.sizes}
               onChange={handleInputChange}
               required
             />
             <input
               type="text"
-              name="color"
-              placeholder="Color *"
-              value={formData.color}
+              name="price"
+              placeholder="Price *"
+              value={formData.price}
               onChange={handleInputChange}
               required
             />
-            <input
-              type="number"
-              name="quantity"
-              placeholder="Quantity *"
-              value={formData.quantity}
+            <select
+              name="status"
+              value={formData.status}
               onChange={handleInputChange}
               required
-            />
-            <input
-              type="text"
-              name="image"
-              placeholder="Image *"
-              value={formData.image}
-              onChange={handleInputChange}
-              required
-            />
+            >
+              <option value="">Select Status</option>
+              <option value="Available">Available</option>
+              <option value="Discontinued">Discontinued</option>
+            </select>
           </div>
         </div>
         <div className="modal-footer">

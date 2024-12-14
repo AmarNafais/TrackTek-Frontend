@@ -3,10 +3,10 @@ import React, { useState } from "react";
 const AddOrderModal = ({ onClose, onAddOrder }) => {
   const [formData, setFormData] = useState({
     customerName: "",
-    garmentType: "",
-    quantity: "",
+    orderDate: "",
+    dueDate: "",
     status: "",
-    date: "",
+    createdBy: "",
   });
 
   const handleInputChange = (e) => {
@@ -18,10 +18,10 @@ const AddOrderModal = ({ onClose, onAddOrder }) => {
 
     const newOrder = {
       customerName: formData.customerName,
-      garmentType: formData.garmentType,
-      quantity: formData.quantity,
+      orderDate: formData.orderDate,
+      dueDate: formData.dueDate,
       status: formData.status,
-      date: formData.date,
+      createdBy: formData.createdBy,
     };
     onAddOrder(newOrder);
     onClose();
@@ -47,22 +47,28 @@ const AddOrderModal = ({ onClose, onAddOrder }) => {
               onChange={handleInputChange}
               required
             />
-            <input
-              type="text"
-              name="garmentType"
-              placeholder="Garment Type *"
-              value={formData.garmentType}
-              onChange={handleInputChange}
-              required
-            />
-            <input
-              type="number"
-              name="quantity"
-              placeholder="Quantity *"
-              value={formData.quantity}
-              onChange={handleInputChange}
-              required
-            />
+            <div className="date-input-container">
+              <input
+                type="date"
+                name="orderDate"
+                value={formData.orderDate}
+                onChange={handleInputChange}
+                placeholder=" "
+                required
+              />
+              <label className="date-placeholder">Select Order Date</label>
+            </div>
+            <div className="date-input-container">
+              <input
+                type="date"
+                name="dueDate"
+                value={formData.dueDate}
+                onChange={handleInputChange}
+                placeholder=" "
+                required
+              />
+              <label className="date-placeholder">Select Due Date</label>
+            </div>
             <select
               name="status"
               value={formData.status}
@@ -71,17 +77,10 @@ const AddOrderModal = ({ onClose, onAddOrder }) => {
             >
               <option value="">Select Status</option>
               <option value="Pending">Pending</option>
-              <option value="Dispatched">Dispatched</option>
+              <option value="In Progress">In Progress</option>
               <option value="Completed">Completed</option>
+              <option value="Cancelled">Cancelled</option>
             </select>
-            <input
-              type="text"
-              name="date"
-              placeholder="Date *"
-              value={formData.date}
-              onChange={handleInputChange}
-              required
-            />
           </div>
         </div>
         <div className="modal-footer">

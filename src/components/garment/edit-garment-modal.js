@@ -2,11 +2,12 @@ import React, { useState } from "react";
 
 const EditGarmentModal = ({ garment, onClose, onSave }) => {
     const [formData, setFormData] = useState({
-        type: garment.type,
-        size: garment.size,
-        color: garment.color,
-        quantity: garment.quantity,
-        image: garment.image,
+        name: garment.name,
+        design: garment.design,
+        category: garment.category,
+        sizes: garment.sizes,
+        price: garment.price,
+        status: garment.status,
     });
 
     const handleChange = (e) => {
@@ -16,11 +17,12 @@ const EditGarmentModal = ({ garment, onClose, onSave }) => {
     const handleSave = () => {
         const updatedGarment = {
             ...garment,
-            type: formData.type,
-            size: formData.size,
-            color: formData.color,
-            quantity: formData.quantity,
-            image: formData.image,
+            name: formData.name,
+            design: formData.design,
+            category: formData.category,
+            sizes: formData.sizes,
+            price: formData.price,
+            status: formData.status,
         };
         onSave(updatedGarment);
         onClose();
@@ -34,43 +36,62 @@ const EditGarmentModal = ({ garment, onClose, onSave }) => {
                 <div className="edit-form-row">
                     <input
                         type="text"
-                        name="type"
-                        placeholder="Type *"
-                        value={formData.type}
+                        name="name"
+                        placeholder="Name *"
+                        value={formData.name}
                         onChange={handleChange}
+                        required
                     />
                     <input
                         type="text"
-                        name="size"
-                        placeholder="Size *"
-                        value={formData.size}
+                        name="design"
+                        placeholder="Design *"
+                        value={formData.design}
                         onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div className="edit-form-row">
+                    <select
+                        name="category"
+                        value={formData.category}
+                        onChange={handleChange}
+                        required
+                    >
+                        <option value="">Select Category</option>
+                        <option value="Casual">Casual</option>
+                        <option value="Sportswear">Sportswear</option>
+                        <option value="Formal">Formal</option>
+                        <option value="Accessories">Accessories</option>
+                    </select>
+                    <input
+                        type="text"
+                        name="sizes"
+                        placeholder="Sizes *"
+                        value={formData.sizes}
+                        onChange={handleChange}
+                        required
                     />
                 </div>
                 <div className="edit-form-row">
                     <input
                         type="text"
-                        name="color"
-                        placeholder="Color *"
-                        value={formData.color}
+                        name="price"
+                        placeholder="Price *"
+                        value={formData.price}
                         onChange={handleChange}
+                        required
                     />
-                    <input
-                        type="number"
-                        name="quantity"
-                        placeholder="Quantity *"
-                        value={formData.quantity}
+                    <select
+                        name="status"
+                        value={formData.status}
                         onChange={handleChange}
-                    />
-                </div>
-                <div className="edit-form-row">
-                    <input
-                        type="text"
-                        name="image"
-                        placeholder="Image *"
-                        value={formData.image}
-                        onChange={handleChange}
-                    />
+                        required
+                    >
+                        <option value="">Select Status</option>
+                        <option value="Available">Available</option>
+                        <option value="Discontinued">Discontinued</option>
+                    </select>
                 </div>
                 <div className="edit-modal-actions">
                     <button className="btn-save" onClick={handleSave}>

@@ -9,11 +9,11 @@ const OrderPage = () => {
   const [showAddOrderModal, setShowAddOrderModal] = useState(false);
   const [editOrder, setEditOrder] = useState(null);
   const [orders, setOrder] = useState([
-    { id: 1, customerName: "Lindsey Shroud", garmentType: "Uniforms", quantity: 5, status: "Pending", date: "20-03-2024" },
-    { id: 2, customerName: "Sarah Brown", garmentType: "Socks", quantity: 25, status: "Completed", date: "20-03-2024"  },
-    { id: 3, customerName: "Michael Owen", garmentType: "Shirts", quantity: 15, status: "Dispatched", date: "20-03-2024"  },
-    { id: 4, customerName: "Mary Jane", garmentType: "Shirts", quantity: 10, status: "Pending", date: "20-03-2024"  },
-    { id: 5, customerName: "Peter Doodle", garmentType: "Uniforms", quantity: 8, status: "Completed", date: "20-03-2024"  },
+    { id: 1, customerName: "Lindsey Shroud", orderDate: "2024-03-15", dueDate: "2024-03-15", status: "Pending", createdBy: "Mark" },
+    { id: 2, customerName: "Sarah Brown", orderDate: "2024-03-15", dueDate: "2024-03-15", status: "Completed", createdBy: "Sam"  },
+    { id: 3, customerName: "Michael Owen", orderDate: "2024-03-15", dueDate: "2024-03-15", status: "In Progress", createdBy: "Henry"  },
+    { id: 4, customerName: "Mary Jane", orderDate: "2024-03-15", dueDate: "2024-03-15", status: "Pending", createdBy: "Gotham"  },
+    { id: 5, customerName: "Peter Doodle", orderDate: "2024-03-15", dueDate: "2024-03-15", status: "Cancelled", createdBy: "George"  },
   ]);
 
   const handleDelete = (id) => {
@@ -54,10 +54,10 @@ const OrderPage = () => {
                 <tr>
                   <th>Id</th>
                   <th>Customer Name</th>
-                  <th>Garment Type</th>
-                  <th>Quantity</th>
+                  <th>Order Date</th>
+                  <th>Due Date</th>
                   <th>Status</th>
-                  <th>Date</th>
+                  <th>Created By</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -66,10 +66,10 @@ const OrderPage = () => {
                   <tr key={order.id}>
                     <td>{order.id}</td>
                     <td>{order.customerName}</td>
-                    <td>{order.garmentType}</td>
-                    <td>{order.quantity}</td>
+                    <td>{order.orderDate}</td>
+                    <td>{order.dueDate}</td>
                     <td>{order.status}</td>
-                    <td>{order.date}</td>
+                    <td>{order.createdBy}</td>
                     <td>
                       <button className="action-button edit-button" onClick={() => setEditOrder(order)}>
                         <FaEdit />

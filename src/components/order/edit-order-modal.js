@@ -1,12 +1,21 @@
 import React, { useState } from "react";
 
+const formatDate = (date) => {
+    if (!date) return ""; // Handle empty date
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0"); // Add leading zero
+    const day = String(d.getDate()).padStart(2, "0"); // Add leading zero
+    return `${year}-${month}-${day}`;
+};
+
 const EditOrderModal = ({ order, onClose, onSave }) => {
     const [formData, setFormData] = useState({
         customerName: order.customerName,
-        garmentType: order.garmentType,
-        quantity: order.quantity,
+        orderDate: formatDate(order.orderDate),
+        dueDate: formatDate(order.dueDate),
         status: order.status,
-        date: order.date,
+        createdBy: order.createdBy,
     });
 
     const handleChange = (e) => {
@@ -17,10 +26,10 @@ const EditOrderModal = ({ order, onClose, onSave }) => {
         const updatedOrder = {
             ...order,
             customerName: formData.customerName,
-            garment: formData.garment,
-            quantity: formData.quantity,
+            orderDate: formData.orderDate,
+            dueDate: formData.dueDate,
             status: formData.status,
-            date: formData.date,
+            createdBy: formData.createdBy,
         };
         onSave(updatedOrder);
         onClose();
@@ -39,22 +48,30 @@ const EditOrderModal = ({ order, onClose, onSave }) => {
                         value={formData.customerName}
                         onChange={handleChange}
                     />
-                    <input
-                        type="text"
-                        name="garmentType"
-                        placeholder="Garment Type *"
-                        value={formData.garmentType}
-                        onChange={handleChange}
-                    />
+                    <div className="date-input-container">
+                        <input
+                            type="date"
+                            name="orderDate"
+                            value={formData.orderDate}
+                            onChange={handleChange}
+                            placeholder=" "
+                            required
+                        />
+                        <label className="date-placeholder">Select Order Date</label>
+                    </div>
                 </div>
                 <div className="edit-form-row">
-                    <input
-                        type="number"
-                        name="quantity"
-                        placeholder="Quantity *"
-                        value={formData.quantity}
-                        onChange={handleChange}
-                    />
+                    <div className="date-input-container">
+                        <input
+                            type="date"
+                            name="dueDate"
+                            value={formData.dueDate}
+                            onChange={handleChange}
+                            placeholder=" "
+                            required
+                        />
+                        <label className="date-placeholder">Select Due Date</label>
+                    </div>
                     <select
                         name="status"
                         value={formData.status}
@@ -62,8 +79,9 @@ const EditOrderModal = ({ order, onClose, onSave }) => {
                     >
                         <option value="">Select Status</option>
                         <option value="Pending">Pending</option>
-                        <option value="Dispatched">Dispatched</option>
+                        <option value="In Progress">In Progress</option>
                         <option value="Completed">Completed</option>
+                        <option value="Cancelled">Cancelled</option>
                     </select>
                 </div>
                 <div className="edit-modal-actions">

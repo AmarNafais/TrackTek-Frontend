@@ -50,7 +50,7 @@ const Sidebar = () => {
         <FaMoneyCheckAlt className="side-nav-icons" />
         <span>Costs</span>
       </NavLink>
-      <NavLink to="/reports" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
+      <NavLink to="/report" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
         <HiDocumentReport className="side-nav-icons" />
         <span>Reports</span>
       </NavLink>

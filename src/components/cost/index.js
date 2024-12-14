@@ -1,7 +1,7 @@
 import React from 'react';
 import Sidebar from "../side-nav";
 import Header from "../header";
-import productionChart from "../../assets/production-chart.svg";
+import ProductionDonutChart from "./production-donut-chart.js";
 import earningSummaryChart from "../../assets/earning-summary-chart.svg";
 
 const CostsPage = () => {
@@ -35,7 +35,7 @@ const CostsPage = () => {
                             </div>
 
                             <div className="cost-production-chart">
-                                <img src={productionChart} alt="Production Chart" className="cost-chart-image" />
+                                <ProductionDonutChart />
                             </div>
                         </div>
 
@@ -49,13 +49,12 @@ const CostsPage = () => {
                             </div>
 
                             <div className="cost-customer-status">
-                                <h3>Live Customer Status</h3>
+                                <h3>Live Order Status</h3>
                                 <table>
                                     <thead>
                                         <tr>
-                                            <th>No</th>
                                             <th>ID</th>
-                                            <th>Driver</th>
+                                            <th>Customer</th>
                                             <th>Status</th>
                                             <th>Payment</th>
                                             <th></th>
@@ -63,32 +62,28 @@ const CostsPage = () => {
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>01</td>
-                                            <td>6465</td>
+                                            <td>1</td>
                                             <td>Alex Noman</td>
                                             <td><span className="cost-status completed">Completed</span></td>
                                             <td>Rs. 15,000</td>
                                             <td><button className="cost-details-button">Details</button></td>
                                         </tr>
                                         <tr>
-                                            <td>02</td>
-                                            <td>5665</td>
+                                            <td>2</td>
                                             <td>Razib Rahman</td>
                                             <td><span className="cost-status pending">Pending</span></td>
                                             <td>Rs. 20,000</td>
                                             <td><button className="cost-details-button">Details</button></td>
                                         </tr>
                                         <tr>
-                                            <td>03</td>
-                                            <td>1755</td>
+                                            <td>3</td>
                                             <td>Luke Norton</td>
                                             <td><span className="cost-status pending">Pending</span></td>
                                             <td>Rs. 75,000</td>
                                             <td><button className="cost-details-button">Details</button></td>
                                         </tr>
                                         <tr>
-                                            <td>03</td>
-                                            <td>1755</td>
+                                            <td>3</td>
                                             <td>Luke Norton</td>
                                             <td><span className="cost-status completed">Completed</span></td>
                                             <td>Rs. 75,000</td>

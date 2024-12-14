@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 
-const AddInventoryModal = ({ onClose, onAddItem }) => {
+const AddGarmentInventoryModal = ({ onClose, onAddGarmentInventory }) => {
   const [formData, setFormData] = useState({
     name: "",
-    unitCost: "",
-    quantity: "",
-    unitOfMeasurement: "",
+    requiredQuantity: "",
   });
 
   const handleInputChange = (e) => {
@@ -13,15 +11,13 @@ const AddInventoryModal = ({ onClose, onAddItem }) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleAddItem = () => {
+  const handleAddGarmentInventory = () => {
 
-    const newItem = {
+    const newGarmentInventory = {
       name: formData.name,
-      unitCost: formData.unitCost,
-      quantity: formData.quantity,
-      unitOfMeasurement: formData.unitOfMeasurement,
+      requiredQuantity: formData.requiredQuantity,
     };
-    onAddItem(newItem);
+    onAddGarmentInventory(newGarmentInventory);
     onClose();
   };
 
@@ -46,39 +42,17 @@ const AddInventoryModal = ({ onClose, onAddItem }) => {
               required
             />
             <input
-              type="text"
-              name="unitCost"
-              placeholder="Unit Cost *"
-              value={formData.unitCost}
-              onChange={handleInputChange}
-              required
-            />
-            <input
               type="number"
-              name="quantity"
-              placeholder="Quantity *"
-              value={formData.quantity}
+              name="requiredQuantity"
+              placeholder="Required Quantity *"
+              value={formData.requiredQuantity}
               onChange={handleInputChange}
               required
             />
-            <select
-              name="unitOfMeasurement"
-              value={formData.unitOfMeasurement}
-              onChange={handleInputChange}
-              required
-            >
-              <option value="">Select Unit of Measurement</option>
-              <option value="mm">mm</option>
-              <option value="cm">cm</option>
-              <option value="m">m</option>
-              <option value="mg">mg</option>
-              <option value="g">g</option>
-              <option value="kg">kg</option>
-            </select>
           </div>
         </div>
         <div className="modal-footer">
-          <button className="add-user-modal-button" onClick={handleAddItem}>
+          <button className="add-user-modal-button" onClick={handleAddGarmentInventory}>
             Add Item
           </button>
           <button className="cancel-button" onClick={onClose}>
@@ -90,4 +64,4 @@ const AddInventoryModal = ({ onClose, onAddItem }) => {
   );
 };
 
-export default AddInventoryModal;
+export default AddGarmentInventoryModal;

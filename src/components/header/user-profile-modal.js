@@ -3,7 +3,6 @@ import React, { useState } from "react";
 const UserProfileModal = ({ onClose, user, onSave }) => {
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
-  const [mobileNumber, setMobileNumber] = useState(user.mobileNumber);
   const [role, setRole] = useState(user.role);
   const [profilePicture, setProfilePicture] = useState(user.profilePicture);
   const predefinedPictures = [
@@ -25,7 +24,6 @@ const UserProfileModal = ({ onClose, user, onSave }) => {
     const updatedUser = {
       name,
       email,
-      mobileNumber,
       role,
       profilePicture,
     };
@@ -77,15 +75,6 @@ const UserProfileModal = ({ onClose, user, onSave }) => {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="mobile">Mobile Number</label>
-            <input
-              type="tel"
-              id="mobile"
-              value={mobileNumber}
-              onChange={(e) => setMobileNumber(e.target.value)}
             />
           </div>
           <div className="form-group">

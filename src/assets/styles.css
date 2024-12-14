@@ -645,8 +645,8 @@ body {
     gap: 2px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
-    height: 87.4%;
-    width: 70%;
+    height: 350px;
+    width: 435px;
     margin-left: -5px;
     margin-top: 10px;
 }
@@ -690,39 +690,71 @@ body {
     color: #2B3A8E;
 }
 
+/* product-log-pie-chart.css */
+
 .product-log-chart-card {
     padding: 20px;
     border-radius: 10px;
-    margin-top: -65px;
-    margin-left: -35px;
-    max-width: 450px;
-    max-height: 4px;
-    width: 100%;
-    height: auto;
+    margin-top: -19px;
+    margin-left: -5px;
+    width: 397px;
+    height: 350px;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
 }
 
-.order-performance-chart-card {
-    border-radius: 10px;
-    margin-left: -33.5%;
-    margin-top: -7%;
-    height: auto;
-    width: 86.7%;
-}
+/* order-performance-line-chart.css */
 
-.orders-chart-card {
-    height: auto;
-    width: 87%;
-    margin-left: -230px;
-    margin-top: -16px;
+.order-performance-line-chart-container {
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
     padding: 20px;
-    border-radius: 10px;
+    text-align: left;
+    font-family: Arial, sans-serif;
+    width: 490px;
+    margin-left: -200px;
+    margin-top: -18px;
 }
 
-.chart-placeholder {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
+.order-performance-line-chart-title {
+    margin: 0 0 20px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
 }
+
+.order-performance-line-chart-wrapper {
+    height: 309px;
+}
+
+
+/* orders-pie-chart.css */
+
+.orders-pie-chart-container {
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    padding: 20px;
+    text-align: left;
+    font-family: Arial, sans-serif;
+    width: 490px;
+    margin-top: 10px;
+    margin-left: -200px;
+}
+
+.orders-pie-chart-title {
+    margin: 0 0 20px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+.orders-pie-chart-wrapper {
+    height: 270px;
+}
+
 
 /* side-nav.css  */
 
@@ -1370,12 +1402,84 @@ body {
     color: #718096;
 }
 
-.cost-production-chart {
-    margin-top: -25px;
-    height: auto;
-    width: 340px;
-    margin-left: -25px;
+/* production-donut-chart.css */
+
+.production-donut-chart-container {
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
+    padding: 20px;
+    width: 240px;
+    text-align: left;
+    font-family: Arial, sans-serif;
+    margin-top: -10px;
+}
+
+.production-donut-chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.production-donut-chart-header h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+.production-donut-chart-filter-button {
+    background-color: #f4f6f9;
+    border: none;
+    border-radius: 15px;
+    padding: 5px 10px;
+    font-size: 12px;
+    color: #555;
+    cursor: pointer;
+}
+
+.production-donut-chart-content {
+    position: relative;
+}
+
+.production-donut-chart-legend {
+    margin-top: 20px;
+}
+
+.production-donut-chart-legend-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.production-donut-chart-legend-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.production-donut-chart-legend-item span {
+    font-size: 14px;
+    color: #333;
+}
+
+.production-donut-chart-percentage {
+    font-weight: bold;
+}
+
+.production-donut-chart-arrow-up {
+    color: #28a745;
+    font-size: 12px;
+    margin-left: 4px;
+}
+
+.production-donut-chart-arrow-down {
+    color: #dc3545;
+    font-size: 12px;
+    margin-left: 4px;
 }
 
 .cost-chart-image {
@@ -1607,4 +1711,213 @@ body {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* garment-more.css */
+
+.garment-more-page {
+    padding: 20px;
+    padding-top: 50px;
+}
+
+.garment-tables-container {
+    display: flex;
+    gap: 20px;
+}
+
+.garment-table-column {
+    flex: 1;
+}
+
+.add-garment-machine-button {
+    background-color: #273c75;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-bottom: 20px;
+    transition: background-color 0.3s ease;
+    width: 20%;
+    margin-left: 80%;
+}
+
+.add-garment-machine-button:hover {
+    background-color: #357abd;
+}
+
+.garment-machine-table-container {
+    margin-left: -5.5%;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transform: scale(0.9);
+}
+
+.garment-machine-table-container h3 {
+    margin-top: -5px;
+}
+
+.garment-machine-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1px;
+}
+
+.garment-machine-table thead {
+    background-color: #273c75;
+    color: #ffffff;
+}
+
+.garment-machine-table th,
+.garment-machine-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    margin-top: 10px;
+}
+
+.garment-machine-table tbody tr td:last-child {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.garment-machine-table tbody tr:hover {
+    background-color: #f4f6f9;
+}
+
+.garment-machine-action-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 5px;
+}
+
+.garment-machine-edit-button {
+    color: #273c75;
+}
+
+.garment-machine-delete-button {
+    color: #273c75;
+}
+
+.garment-machine-action-button:hover {
+    transform: scale(1.1);
+    background-color: transparent;
+}
+
+.add-garment-inventory-button {
+    background-color: #273c75;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-bottom: 20px;
+    transition: background-color 0.3s ease;
+    width: 20%;
+    margin-left: 80%;
+}
+
+.add-garment-inventory-button:hover {
+    background-color: #357abd;
+}
+
+.garment-inventory-table-container {
+    margin-left: -5.5%;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transform: scale(0.9);
+}
+
+.garment-inventory-table-container h3 {
+    margin-top: -5px;
+}
+
+.garment-inventory-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1px;
+}
+
+.garment-inventory-table thead {
+    background-color: #273c75;
+    color: #ffffff;
+}
+
+.garment-inventory-table th,
+.garment-inventory-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    margin-top: 10px;
+}
+
+.garment-inventory-table tbody tr td:last-child {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.garment-inventory-table tbody tr:hover {
+    background-color: #f4f6f9;
+}
+
+.garment-inventory-action-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 5px;
+}
+
+.garment-inventory-edit-button {
+    color: #273c75;
+}
+
+.garment-inventory-delete-button {
+    color: #273c75;
+}
+
+.garment-inventory-action-button:hover {
+    transform: scale(1.1);
+    background-color: transparent;
+}
+
+/* date-modal.css */
+
+.date-input-container {
+    position: relative;
+}
+
+.date-input-container input {
+    width: 93%;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.date-input-container .date-placeholder {
+    position: absolute;
+    left: 12px;
+    top: 10px;
+    color: #aaa;
+    pointer-events: none;
+    transition: 0.2s ease all;
+}
+
+.date-input-container input:focus+.date-placeholder,
+.date-input-container input:not(:placeholder-shown)+.date-placeholder {
+    top: -8px;
+    left: 10px;
+    font-size: 12px;
+    color: #555;
 }

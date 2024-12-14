@@ -2,9 +2,10 @@ import React, { useState } from "react";
 
 const EditInventoryModal = ({ item, onClose, onSave }) => {
     const [formData, setFormData] = useState({
-        itemName: item.itemName,
+        name: item.name,
+        unitCost: item.unitCost,
         quantity: item.quantity,
-        stockLevel: item.stockLevel,
+        unitOfMeasurement: item.unitOfMeasurement,
     });
 
     const handleChange = (e) => {
@@ -14,9 +15,10 @@ const EditInventoryModal = ({ item, onClose, onSave }) => {
     const handleSave = () => {
         const updatedItem = {
             ...item,
-            itemName: formData.itemName,
+            name: formData.name,
+            unitCost: formData.unitCost,
             quantity: formData.quantity,
-            stockLevel: formData.stockLevel,
+            unitOfMeasurement: formData.unitOfMeasurement,
         };
         onSave(updatedItem);
         onClose();
@@ -30,27 +32,44 @@ const EditInventoryModal = ({ item, onClose, onSave }) => {
                 <div className="edit-form-row">
                     <input
                         type="text"
-                        name="itemName"
-                        placeholder="Item Name *"
-                        value={formData.itemName}
+                        name="name"
+                        placeholder="Name *"
+                        value={formData.name}
                         onChange={handleChange}
+                        required
                     />
+                    <input
+                        type="text"
+                        name="unitCost"
+                        placeholder="Unit Cost *"
+                        value={formData.unitCost}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div className="edit-form-row">
                     <input
                         type="number"
                         name="quantity"
                         placeholder="Quantity *"
                         value={formData.quantity}
                         onChange={handleChange}
+                        required
                     />
-                </div>
-                <div className="edit-form-row">
-                    <input
-                        type="text"
-                        name="stockLevel"
-                        placeholder="StockLevel *"
-                        value={formData.stockLevel}
+                    <select
+                        name="unitOfMeasurement"
+                        value={formData.unitOfMeasurement}
                         onChange={handleChange}
-                    />
+                        required
+                    >
+                        <option value="">Select Unit of Measurement</option>
+                        <option value="mm">mm</option>
+                        <option value="cm">cm</option>
+                        <option value="m">m</option>
+                        <option value="mg">mg</option>
+                        <option value="g">g</option>
+                        <option value="kg">kg</option>
+                    </select>
                 </div>
                 <div className="edit-modal-actions">
                     <button className="btn-save" onClick={handleSave}>

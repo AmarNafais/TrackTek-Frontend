@@ -4,9 +4,9 @@ import Header from '../header';
 import { HiMiniUsers } from "react-icons/hi2";
 import { FaTasks } from "react-icons/fa";
 import { GiSewingMachine } from "react-icons/gi";
-import ordersChart from '../../assets/orders-chart.svg';
-import productLogChart from '../../assets/product-log-chart.svg';
-import orderPerformanceChart from '../../assets/order-performance-chart.svg';
+import OrdersChart from './orders-pie-chart';
+import ProductLogPieChart from './product-log-pie-chart';
+import OrderPerformanceLineChart from './order-performance-line-chart';
 
 
 const Dashboard = () => {
@@ -73,13 +73,13 @@ const Dashboard = () => {
             </div>
           </div>
           <div className="orders-chart-card">
-            <img src={ordersChart} alt="Orders Chart" className="chart-placeholder" />
+            <OrdersChart />
           </div>
           <div className="product-log-chart-card">
-            <img src={productLogChart} alt="Product Log Chart" className="chart-placeholder" />
+            <ProductLogPieChart />
           </div>
           <div className="order-performance-chart-card">
-            <img src={orderPerformanceChart} alt="Order Performance Chart" className="chart-placeholder" />
+            <OrderPerformanceLineChart />
           </div>
         </div>
       </main>

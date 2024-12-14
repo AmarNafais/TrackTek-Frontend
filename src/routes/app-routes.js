@@ -1,17 +1,19 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "../components/login/login.js";
-import SignUp from "../components/login/sign-up.js"
-import ForgotPassword from "../components/login/forgot-password.js"
-import VerifyCode from "../components/login/verify-code.js"
-import SetPassword from "../components/login/set-password.js"
-import Dashboard from "../components/dashboard/index.js"
-import User from "../components/user/index.js"
-import Inventory from "../components/inventory/index.js"
-import Order from "../components/order/index.js"
-import Garment from "../components/garment/index.js"
-import Machine from "../components/machine/index.js"
-import Cost from "../components/cost/index.js"
+import SignUp from "../components/login/sign-up.js";
+import ForgotPassword from "../components/login/forgot-password.js";
+import VerifyCode from "../components/login/verify-code.js";
+import SetPassword from "../components/login/set-password.js";
+import Dashboard from "../components/dashboard/index.js";
+import User from "../components/user/index.js";
+import Inventory from "../components/inventory/index.js";
+import Order from "../components/order/index.js";
+import Garment from "../components/garment/index.js";
+import GarmentMore from "../components/garment/garment-more/garment-more.js";
+import Machine from "../components/machine/index.js";
+import Cost from "../components/cost/index.js";
+import Report from "../components/report/index.js";
 
 const AppRoutes = () => {
   return (
@@ -27,8 +29,10 @@ const AppRoutes = () => {
         <Route path="/inventory" element={<Inventory />} />
         <Route path="/order" element={<Order />} />
         <Route path="/garment" element={<Garment />} />
+        <Route path="/garment-more" element={<GarmentMore />} />
         <Route path="/machine" element={<Machine />} />
         <Route path="/cost" element={<Cost />} />
+        <Route path="/report" element={<Report />} />
       </Routes>
     </Router>
   );
