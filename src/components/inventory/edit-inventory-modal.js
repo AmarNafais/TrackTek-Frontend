@@ -1,27 +1,49 @@
 import React, { useState } from "react";
+import { updateMaterial } from "../../redux/actions/axios"; // Import the updateMaterial API function
 
 const EditInventoryModal = ({ item, onClose, onSave }) => {
     const [formData, setFormData] = useState({
         name: item.name,
-        unitCost: item.unitCost,
-        quantity: item.quantity,
-        unitOfMeasurement: item.unitOfMeasurement,
+        unitCost: item.unitCost, // Ensure this is numeric
+        quantityInStock: item.quantityInStock, // Correct key for quantity
+        unit: item.unit, // Correct key for unit
     });
 
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
     };
 
-    const handleSave = () => {
-        const updatedItem = {
-            ...item,
-            name: formData.name,
-            unitCost: formData.unitCost,
-            quantity: formData.quantity,
-            unitOfMeasurement: formData.unitOfMeasurement,
-        };
-        onSave(updatedItem);
-        onClose();
+    const handleSave = async () => {
+        // Validate required fields
+        if (!formData.name || !formData.unitCost || !formData.quantityInStock || !formData.unit) {
+            setError("All fields are required.");
+            return;
+        }
+
+        setError("");
+        setLoading(true);
+
+        try {
+            const updatedMaterial = {
+                id: item.id, // Include the material ID
+                name: formData.name,
+                unitCost: parseFloat(formData.unitCost), // Ensure unitCost is a number
+                quantityInStock: parseInt(formData.quantityInStock, 10), // Ensure quantity is an integer
+                unit: formData.unit,
+            };
+
+            const result = await updateMaterial(updatedMaterial); // Call the API to update the material
+            onSave(result); // Pass the updated material to the parent component
+            onClose(); // Close the modal
+        } catch (err) {
+            setError(err.message || "Failed to update item. Please try again.");
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -50,15 +72,15 @@ const EditInventoryModal = ({ item, onClose, onSave }) => {
                 <div className="edit-form-row">
                     <input
                         type="number"
-                        name="quantity"
+                        name="quantityInStock"
                         placeholder="Quantity *"
-                        value={formData.quantity}
+                        value={formData.quantityInStock}
                         onChange={handleChange}
                         required
                     />
                     <select
-                        name="unitOfMeasurement"
-                        value={formData.unitOfMeasurement}
+                        name="unit"
+                        value={formData.unit}
                         onChange={handleChange}
                         required
                     >
@@ -71,11 +93,20 @@ const EditInventoryModal = ({ item, onClose, onSave }) => {
                         <option value="kg">kg</option>
                     </select>
                 </div>
+                {error && <div className="error-message">{error}</div>}
                 <div className="edit-modal-actions">
-                    <button className="btn-save" onClick={handleSave}>
-                        Edit Item
+                    <button
+                        className="btn-save"
+                        onClick={handleSave}
+                        disabled={loading}
+                    >
+                        {loading ? "Saving..." : "Save Changes"}
                     </button>
-                    <button className="btn-cancel" onClick={onClose}>
+                    <button
+                        className="btn-cancel"
+                        onClick={onClose}
+                        disabled={loading}
+                    >
                         Cancel
                     </button>
                 </div>

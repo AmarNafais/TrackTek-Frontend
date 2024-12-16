@@ -8,7 +8,8 @@ import {
 } from "react-icons/hi2";
 import {
   FaTasks,
-  FaMoneyCheckAlt
+  FaMoneyCheckAlt,
+  FaUsers
 } from "react-icons/fa";
 import {
   GiClothes,
@@ -37,6 +38,10 @@ const Sidebar = () => {
       <NavLink to="/order" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
         <FaTasks className="side-nav-icons" />
         <span>Orders</span>
+      </NavLink>
+      <NavLink to="/customer" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
+        <FaUsers className="side-nav-icons" />
+        <span>Customers</span>
       </NavLink>
       <NavLink to="/garment" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
         <GiClothes className="side-nav-icons" />

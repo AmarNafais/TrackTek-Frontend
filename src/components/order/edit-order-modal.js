@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { updateOrder } from "../../redux/actions/axios"; // Import the updateOrder API function
 
 const formatDate = (date) => {
     if (!date) return ""; // Handle empty date
@@ -11,42 +12,60 @@ const formatDate = (date) => {
 
 const EditOrderModal = ({ order, onClose, onSave }) => {
     const [formData, setFormData] = useState({
-        customerName: order.customerName,
+        customerId: order.customerId,
         orderDate: formatDate(order.orderDate),
         dueDate: formatDate(order.dueDate),
-        status: order.status,
-        createdBy: order.createdBy,
+        totalCost: order.totalCost || 0,
+        orderStatus: order.orderStatus,
+        userId: order.userId,
+        garmentId: order.garmentId,
+        quantity: order.quantity || 0,
+        size: order.size || "",
+        id: order.id,
     });
 
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
+
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
     };
 
-    const handleSave = () => {
-        const updatedOrder = {
-            ...order,
-            customerName: formData.customerName,
-            orderDate: formData.orderDate,
-            dueDate: formData.dueDate,
-            status: formData.status,
-            createdBy: formData.createdBy,
-        };
-        onSave(updatedOrder);
-        onClose();
+    const handleSave = async () => {
+        setError("");
+        setLoading(true);
+
+        try {
+            const updatedOrder = {
+                ...formData,
+                totalCost: parseFloat(formData.totalCost),
+                quantity: parseInt(formData.quantity, 10),
+            };
+
+            const result = await updateOrder(updatedOrder); // Call the API to update the order
+            onSave(result); // Pass the updated order to the parent component
+            onClose(); // Close the modal
+        } catch (err) {
+            setError(err.message || "Failed to update order. Please try again.");
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
         <div className="edit-modal">
             <div className="edit-modal-content">
                 <h2>Edit Order</h2>
-                <p>ID - {order.id}</p>
+                <p>ID - {formData.id}</p>
                 <div className="edit-form-row">
                     <input
-                        type="text"
-                        name="customerName"
-                        placeholder="Customer Name *"
-                        value={formData.customerName}
+                        type="number"
+                        name="customerId"
+                        placeholder="Customer ID *"
+                        value={formData.customerId}
                         onChange={handleChange}
+                        required
                     />
                     <div className="date-input-container">
                         <input
@@ -54,7 +73,6 @@ const EditOrderModal = ({ order, onClose, onSave }) => {
                             name="orderDate"
                             value={formData.orderDate}
                             onChange={handleChange}
-                            placeholder=" "
                             required
                         />
                         <label className="date-placeholder">Select Order Date</label>
@@ -67,28 +85,81 @@ const EditOrderModal = ({ order, onClose, onSave }) => {
                             name="dueDate"
                             value={formData.dueDate}
                             onChange={handleChange}
-                            placeholder=" "
                             required
                         />
                         <label className="date-placeholder">Select Due Date</label>
                     </div>
                     <select
-                        name="status"
-                        value={formData.status}
+                        name="orderStatus"
+                        value={formData.orderStatus}
                         onChange={handleChange}
+                        required
                     >
                         <option value="">Select Status</option>
-                        <option value="Pending">Pending</option>
-                        <option value="In Progress">In Progress</option>
-                        <option value="Completed">Completed</option>
-                        <option value="Cancelled">Cancelled</option>
+                        <option value="1">Pending</option>
+                        <option value="2">In Progress</option>
+                        <option value="3">Completed</option>
+                        <option value="4">Canceled</option>
                     </select>
                 </div>
+                <div className="edit-form-row">
+                    <input
+                        type="number"
+                        name="garmentId"
+                        placeholder="Garment ID *"
+                        value={formData.garmentId}
+                        onChange={handleChange}
+                        required
+                    />
+                    <input
+                        type="number"
+                        name="quantity"
+                        placeholder="Quantity *"
+                        value={formData.quantity}
+                        onChange={handleChange}
+                        required
+                    />
+                    <input
+                        type="text"
+                        name="size"
+                        placeholder="Size *"
+                        value={formData.size}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div className="edit-form-row">
+                    <input
+                        type="number"
+                        name="totalCost"
+                        placeholder="Total Cost *"
+                        value={formData.totalCost}
+                        onChange={handleChange}
+                        required
+                    />
+                    <input
+                        type="number"
+                        name="userId"
+                        placeholder="User ID *"
+                        value={formData.userId}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                {error && <p className="error-message">{error}</p>}
                 <div className="edit-modal-actions">
-                    <button className="btn-save" onClick={handleSave}>
-                        Edit Order
+                    <button
+                        className="btn-save"
+                        onClick={handleSave}
+                        disabled={loading}
+                    >
+                        {loading ? "Saving..." : "Save Changes"}
                     </button>
-                    <button className="btn-cancel" onClick={onClose}>
+                    <button
+                        className="btn-cancel"
+                        onClick={onClose}
+                        disabled={loading}
+                    >
                         Cancel
                     </button>
                 </div>

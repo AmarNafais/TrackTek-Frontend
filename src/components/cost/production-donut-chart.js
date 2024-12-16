@@ -1,19 +1,73 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Doughnut } from "react-chartjs-2";
 import "chart.js/auto";
+import { fetchOrders } from "../../redux/actions/axios"; // Import fetchOrders API
 
 const DonutChartComponent = () => {
-  const data = {
-    labels: ["Total Production", "Total Pending", "Total Damaged"],
+  const [data, setData] = useState({
+    labels: ["Total Pending", "Total In Progress", "Total Completed", "Total Cancelled"],
     datasets: [
       {
-        data: [54, 20, 26],
-        backgroundColor: ["#007bff", "#28a745", "#dc3545"],
-        hoverBackgroundColor: ["#0056b3", "#218838", "#c82333"],
+        data: [0, 0, 0, 0], // Default values
+        backgroundColor: ["#007bff", "#ffc107", "#28a745", "#dc3545"],
+        hoverBackgroundColor: ["#0056b3", "#e0a800", "#218838", "#c82333"],
         borderWidth: 0,
       },
     ],
+  });
+
+  const [totals, setTotals] = useState({
+    totalPending: 0,
+    totalInProgress: 0,
+    totalCompleted: 0,
+    totalCancelled: 0,
+  });
+
+  // Status mapping
+  const statusMap = {
+    1: "Pending",
+    2: "In Progress",
+    3: "Completed",
+    4: "Cancelled",
   };
+
+  useEffect(() => {
+    const loadOrderData = async () => {
+      try {
+        const orders = await fetchOrders(); // Fetch orders
+
+        // Calculate counts for each status
+        const totalPending = orders.filter((order) => order.orderStatus === 1).length;
+        const totalInProgress = orders.filter((order) => order.orderStatus === 2).length;
+        const totalCompleted = orders.filter((order) => order.orderStatus === 3).length;
+        const totalCancelled = orders.filter((order) => order.orderStatus === 4).length;
+
+        // Update chart data and totals
+        setData({
+          labels: ["Total Pending", "Total In Progress", "Total Completed", "Total Cancelled"],
+          datasets: [
+            {
+              data: [totalPending, totalInProgress, totalCompleted, totalCancelled],
+              backgroundColor: ["#007bff", "#ffc107", "#28a745", "#dc3545"],
+              hoverBackgroundColor: ["#0056b3", "#e0a800", "#218838", "#c82333"],
+              borderWidth: 0,
+            },
+          ],
+        });
+
+        setTotals({
+          totalPending,
+          totalInProgress,
+          totalCompleted,
+          totalCancelled,
+        });
+      } catch (error) {
+        console.error("Error fetching orders for chart:", error.message);
+      }
+    };
+
+    loadOrderData();
+  }, []);
 
   const options = {
     plugins: {
@@ -21,7 +75,7 @@ const DonutChartComponent = () => {
       tooltip: {
         callbacks: {
           label: (context) => {
-            return ` ${context.raw}%`;
+            return ` ${context.raw}`; // Show raw value instead of percentage
           },
         },
       },
@@ -32,7 +86,7 @@ const DonutChartComponent = () => {
   return (
     <div className="production-donut-chart-container">
       <div className="production-donut-chart-header">
-        <h3>Production</h3>
+        <h3>Orders</h3>
         <button className="production-donut-chart-filter-button">Today</button>
       </div>
       <div className="production-donut-chart-content">
@@ -40,18 +94,23 @@ const DonutChartComponent = () => {
         <div className="production-donut-chart-legend">
           <div className="production-donut-chart-legend-item">
             <span className="production-donut-chart-legend-dot" style={{ backgroundColor: "#007bff" }}></span>
-            <span>Total Production</span>
-            <span className="production-donut-chart-percentage">54% <span className="production-donut-chart-arrow-up">&#8593;</span></span>
+            <span>Total Pending</span>
+            <span className="production-donut-chart-percentage">{totals.totalPending}</span>
+          </div>
+          <div className="production-donut-chart-legend-item">
+            <span className="production-donut-chart-legend-dot" style={{ backgroundColor: "#ffc107" }}></span>
+            <span>Total In Progress</span>
+            <span className="production-donut-chart-percentage">{totals.totalInProgress}</span>
           </div>
           <div className="production-donut-chart-legend-item">
             <span className="production-donut-chart-legend-dot" style={{ backgroundColor: "#28a745" }}></span>
-            <span>Total Pending</span>
-            <span className="production-donut-chart-percentage">20% <span className="production-donut-chart-arrow-up">&#8593;</span></span>
+            <span>Total Completed</span>
+            <span className="production-donut-chart-percentage">{totals.totalCompleted}</span>
           </div>
           <div className="production-donut-chart-legend-item">
             <span className="production-donut-chart-legend-dot" style={{ backgroundColor: "#dc3545" }}></span>
-            <span>Total Damaged</span>
-            <span className="production-donut-chart-percentage">26% <span className="production-donut-chart-arrow-down">&#8595;</span></span>
+            <span>Total Cancelled</span>
+            <span className="production-donut-chart-percentage">{totals.totalCancelled}</span>
           </div>
         </div>
       </div>

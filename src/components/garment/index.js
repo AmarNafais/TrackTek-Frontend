@@ -1,42 +1,76 @@
-import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Sidebar from "../side-nav";
 import Header from "../header";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { SlOptionsVertical } from "react-icons/sl";
 import AddGarmentModal from "./add-garment-modal";
 import EditGarmentModal from "./edit-garment-modal";
+import { fetchGarments, deleteGarment } from "../../redux/actions/axios"; // Import fetchGarments and deleteGarment APIs
 
 const GarmentsPage = () => {
   const [showAddGarmentModal, setShowAddGarmentModal] = useState(false);
   const [editGarment, setEditGarment] = useState(null);
+  const [garments, setGarments] = useState([]);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const [garments, setGarments] = useState([
-    { id: 1, name: "Shirt", design: "www.shirts.com", category: "Casual", sizes: "1-9", price: "Rs. 100", status: "Available" },
-    { id: 2, name: "Pant", design: "www.shirts.com", category: "Sportswear", sizes: "1-9", price: "Rs. 500", status: "Available" },
-    { id: 3, name: "Skirt", design: "www.shirts.com", category: "Formal", sizes: "1-9", price: "Rs. 200", status: "Discontinued" },
-    { id: 4, name: "Socks", design: "www.shirts.com", category: "Accessories", sizes: "XS, S, M, L, XL", price: "Rs. 120", status: "Available" },
-    { id: 5, name: "Kids Socks", design: "www.shirts.com", category: "Casual", sizes: "1-9", price: "Rs. 150", status: "Discontinued" },
-  ]);
 
-  const handleDelete = (id) => {
-    const updatedGarments = garments.filter((garment) => garment.id !== id);
-    setGarments(updatedGarments);
+  // Fetch garments from API
+  const loadGarments = async () => {
+    try {
+      setLoading(true); // Start loading
+      const garmentsData = await fetchGarments();
+      setGarments(garmentsData);
+    } catch (error) {
+      console.error("Error fetching garments:", error.message);
+    } finally {
+      setLoading(false); // Stop loading
+    }
   };
 
-  const handleAddGarment = (newGarment) => {
-    setGarments([...garments, newGarment]);
+  useEffect(() => {
+    loadGarments(); // Load garments on component mount
+  }, []);
+
+  const handleDelete = async (id) => {
+    try {
+      await deleteGarment(id); // Call the delete API
+      await loadGarments(); // Reload the table after deletion
+    } catch (error) {
+      console.error("Error deleting garment:", error.message);
+    }
   };
 
-  const handleSaveGarment = (updatedGarment) => {
-    const updatedGarments = garments.map((garment) =>
-      garment.id === updatedGarment.id ? updatedGarment : garment
-    );
-    setGarments(updatedGarments);
+  const handleAddGarment = async (newGarment) => {
+    try {
+      await loadGarments(); // Reload the table after adding
+    } catch (error) {
+      console.error("Error adding garment:", error.message);
+    }
+  };
+
+  const handleSaveGarment = async (updatedGarment) => {
+    try {
+      await loadGarments(); // Reload the table after updating
+    } catch (error) {
+      console.error("Error updating garment:", error.message);
+    }
   };
 
   const handleMoreGarment = () => {
-    navigate('/garment-more');
+    navigate("/garment-more");
+  };
+
+  const handleToggleGarmentStatus = async (id) => {
+    const updatedGarments = garments.map((garment) => {
+      if (garment.id === id) {
+        const newStatus =
+          garment.garmentStatus === "Available" ? "Discontinued" : "Available";
+        return { ...garment, garmentStatus: newStatus };
+      }
+      return garment;
+    });
+    setGarments(updatedGarments);
   };
 
   return (
@@ -47,7 +81,10 @@ const GarmentsPage = () => {
         <div className="users-page">
           <h2>Garments</h2>
           <div className="users-table-container">
-            <button className="add-user-button" onClick={() => setShowAddGarmentModal(true)}>
+            <button
+              className="add-user-button"
+              onClick={() => setShowAddGarmentModal(true)}
+            >
               Add Garment
             </button>
             {showAddGarmentModal && (
@@ -56,47 +93,68 @@ const GarmentsPage = () => {
                 onAddGarment={handleAddGarment}
               />
             )}
-            <table className="users-table">
-              <thead>
-                <tr>
-                  <th>Id</th>
-                  <th>Name</th>
-                  <th>Design</th>
-                  <th>Category</th>
-                  <th>Sizes</th>
-                  <th>Price</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {garments.map((garment) => (
-                  <tr key={garment.id}>
-                    <td>{garment.id}</td>
-                    <td>{garment.name}</td>
-                    <td>{garment.design}</td>
-                    <td>{garment.category}</td>
-                    <td>{garment.sizes}</td>
-                    <td>{garment.price}</td>
-                    <td>{garment.status}</td>
-                    <td>
-                      <button className="action-button edit-button" onClick={() => setEditGarment(garment)}>
-                        <FaEdit />
-                      </button>
-                      <button
-                        className="action-button delete-button"
-                        onClick={() => handleDelete(garment.id)}
-                      >
-                        <FaTrashAlt />
-                      </button>
-                      <button className="action-button more-button" onClick={handleMoreGarment}>
-                        <SlOptionsVertical />
-                      </button>
-                    </td>
+            {loading ? (
+              <p>Loading garments...</p>
+            ) : (
+              <table className="users-table">
+                <thead>
+                  <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Design</th>
+                    <th>Category</th>
+                    <th>Sizes</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {garments.map((garment) => (
+                    <tr key={garment.id}>
+                      <td>{garment.id}</td>
+                      <td>{garment.name}</td>
+                      <td>
+                        <a href={garment.design} target="_blank" rel="noreferrer">
+                          View Design
+                        </a>
+                      </td>
+                      <td>{garment.category}</td>
+                      <td>{(garment.sizes?.join(", ")) || "N/A"}</td>
+                      <td>Rs. {garment.basePrice}</td>
+                      <td>
+                        <button
+                          className={`status-button ${(garment.garmentStatus?.toLowerCase()) || "unknown"}`}
+                          onClick={() => handleToggleGarmentStatus(garment.id)}
+                        >
+                          {garment.garmentStatus}
+                        </button>
+                      </td>
+                      <td>
+                        <button
+                          className="action-button edit-button"
+                          onClick={() => setEditGarment(garment)}
+                        >
+                          <FaEdit />
+                        </button>
+                        <button
+                          className="action-button delete-button"
+                          onClick={() => handleDelete(garment.id)}
+                        >
+                          <FaTrashAlt />
+                        </button>
+                        <button
+                          className="action-button more-button"
+                          onClick={handleMoreGarment}
+                        >
+                          <SlOptionsVertical />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
             {editGarment && (
               <EditGarmentModal
                 garment={editGarment}

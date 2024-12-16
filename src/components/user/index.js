@@ -1,20 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from "../side-nav";
 import Header from "../header";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import AddUserModal from "./add-user-modal";
 import EditUserModal from "./edit-user-modal";
+import { fetchUsers } from "../../redux/actions/axios";
 
 const UsersPage = () => {
   const [showAddUserModal, setShowAddUserModal] = useState(false);
   const [editUser, setEditUser] = useState(null);
-  const [users, setUsers] = useState([
-    { id: 1, fullName: "Jack Sparrow", email: "jacksparrow@gmail.com", role: "Manager" },
-    { id: 2, fullName: "Henry Danford", email: "henrydanford@gmail.com", role: "Stock Manager" },
-    { id: 3, fullName: "Larry Hills", email: "larryhills@gmail.com", role: "Staff" },
-    { id: 4, fullName: "Benjamin Franklin", email: "benjaminfranklin@gmail.com", role: "Staff" },
-    { id: 5, fullName: "John Keels", email: "johnkeels@gmail.com", role: "Manager" },
-  ]);
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const loadUsers = async () => {
+      try {
+        const response = await fetchUsers();
+        setUsers(
+          response.map((user) => ({
+            id: user.id,
+            fullName: `${user.firstName} ${user.lastName}`,
+            email: user.email,
+            role: user.role,
+            status: user.isActive ? "Active" : "Inactive",
+          }))
+        );
+      } catch (err) {
+        setError("Failed to fetch users.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadUsers();
+  }, []);
 
   const handleDelete = (id) => {
     const updatedUsers = users.filter((user) => user.id !== id);
@@ -22,7 +42,7 @@ const UsersPage = () => {
   };
 
   const handleAddUser = (newUser) => {
-    setUsers([...users, newUser]);
+    setUsers([...users, { ...newUser, status: "Active" }]);
   };
 
   const handleSaveUser = (updatedUser) => {
@@ -31,6 +51,18 @@ const UsersPage = () => {
     );
     setUsers(updatedUsers);
   };
+
+  const handleToggleStatus = (id) => {
+    const updatedUsers = users.map((user) =>
+      user.id === id
+        ? { ...user, status: user.status === "Active" ? "Inactive" : "Active" }
+        : user
+    );
+    setUsers(updatedUsers);
+  };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <div className="dashboard-container">
@@ -56,6 +88,7 @@ const UsersPage = () => {
                   <th>Full Name</th>
                   <th>Email</th>
                   <th>Role</th>
+                  <th>Status</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -67,7 +100,20 @@ const UsersPage = () => {
                     <td>{user.email}</td>
                     <td>{user.role}</td>
                     <td>
-                      <button className="action-button edit-button" onClick={() => setEditUser(user)}>
+                      <button
+                        className={`status-button ${
+                          user.status === "Active" ? "active" : "inactive"
+                        }`}
+                        onClick={() => handleToggleStatus(user.id)}
+                      >
+                        {user.status}
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        className="action-button edit-button"
+                        onClick={() => setEditUser(user)}
+                      >
                         <FaEdit />
                       </button>
                       <button

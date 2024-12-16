@@ -1,28 +1,47 @@
 import React, { useState } from "react";
+import { addMaterial } from "../../redux/actions/axios"; // Import the addMaterial API function
 
 const AddInventoryModal = ({ onClose, onAddItem }) => {
   const [formData, setFormData] = useState({
     name: "",
     unitCost: "",
-    quantity: "",
-    unitOfMeasurement: "",
+    quantityInStock: "",
+    unit: "",
   });
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleAddItem = () => {
+  const handleAddItem = async () => {
+    if (!formData.name || !formData.unitCost || !formData.quantityInStock || !formData.unit) {
+      setError("All fields are required.");
+      return;
+    }
 
-    const newItem = {
-      name: formData.name,
-      unitCost: formData.unitCost,
-      quantity: formData.quantity,
-      unitOfMeasurement: formData.unitOfMeasurement,
-    };
-    onAddItem(newItem);
-    onClose();
+    setError("");
+    setLoading(true);
+
+    try {
+      const newMaterial = {
+        name: formData.name,
+        unitCost: parseFloat(formData.unitCost), // Ensure unitCost is a number
+        quantityInStock: parseInt(formData.quantityInStock, 10), // Ensure quantity is an integer
+        unit: formData.unit,
+      };
+
+      const addedMaterial = await addMaterial(newMaterial); // Call the API to add material
+      onAddItem(addedMaterial); // Update the parent component state
+      onClose(); // Close the modal
+    } catch (err) {
+      setError(err.message || "Failed to add item. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -55,15 +74,15 @@ const AddInventoryModal = ({ onClose, onAddItem }) => {
             />
             <input
               type="number"
-              name="quantity"
+              name="quantityInStock"
               placeholder="Quantity *"
-              value={formData.quantity}
+              value={formData.quantityInStock}
               onChange={handleInputChange}
               required
             />
             <select
-              name="unitOfMeasurement"
-              value={formData.unitOfMeasurement}
+              name="unit"
+              value={formData.unit}
               onChange={handleInputChange}
               required
             >
@@ -76,12 +95,21 @@ const AddInventoryModal = ({ onClose, onAddItem }) => {
               <option value="kg">kg</option>
             </select>
           </div>
+          {error && <div className="error-message">{error}</div>}
         </div>
         <div className="modal-footer">
-          <button className="add-user-modal-button" onClick={handleAddItem}>
-            Add Item
+          <button
+            className="add-user-modal-button"
+            onClick={handleAddItem}
+            disabled={loading}
+          >
+            {loading ? "Adding..." : "Add Item"}
           </button>
-          <button className="cancel-button" onClick={onClose}>
+          <button
+            className="cancel-button"
+            onClick={onClose}
+            disabled={loading}
+          >
             Cancel
           </button>
         </div>

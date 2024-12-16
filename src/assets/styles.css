@@ -1128,6 +1128,53 @@ body {
     background-color: transparent;
 }
 
+.status-button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.status-button.active {
+    background-color: #4caf50;
+    color: white;
+}
+
+.status-button.inactive {
+    background-color: #f44336;
+    color: white;
+}
+
+.status-button.pending {
+    background-color: #ff9800;
+    color: white;
+}
+
+.status-button.completed {
+    background-color: #4caf50;
+    color: white;
+}
+
+.status-button.in-progress {
+    background-color: #2196f3;
+    color: white;
+}
+
+.status-button.cancelled {
+    background-color: #f44336;
+    color: white;
+}
+
+.status-button.available {
+    background-color: #4caf50;
+    color: white;
+}
+
+.status-button.discontinued {
+    background-color: #f44336;
+    color: white;
+}
+
 /* add-user-modal.css */
 
 .add-user-modal .add-modal-overlay {
@@ -1351,7 +1398,7 @@ body {
 .cost-stats-container {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 15px;
 }
 
 .cost-stat-card {
@@ -1360,7 +1407,7 @@ body {
     border-radius: 8px;
     padding: 15px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    height: 100px;
+    height: 112px;
     width: 250px;
     display: flex;
     flex-direction: column;
@@ -1410,9 +1457,10 @@ body {
     border-radius: 8px;
     padding: 20px;
     width: 240px;
+    height: 450px;
     text-align: left;
     font-family: Arial, sans-serif;
-    margin-top: -10px;
+    margin-top: 2px;
 }
 
 .production-donut-chart-header {
@@ -1496,7 +1544,7 @@ body {
 
 .cost-filter-section {
     margin-top: -55px;
-    margin-left: 600px;
+    margin-left: 182px;
     display: flex;
     gap: 10px;
 }
@@ -1528,6 +1576,8 @@ body {
     border-radius: 8px;
     padding: 15px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 809px;
+    margin-left: -315px;
 }
 
 .cost-customer-status h3 {
@@ -1585,21 +1635,47 @@ body {
     background-color: #2b6cb0;
 }
 
-.cost-earning-summary {
-    margin-left: -42px;
-    margin-top: -40px;
-    border-radius: 8px;
-    padding: 15px;
-}
-
 .cost-earning-summary h3 {
     font-size: 18px;
     margin-bottom: 10px;
 }
 
-.cost-earning-summary .cost-chart-image {
-    width: 104.5%;
-    border-radius: 5px;
+/* earning-summary-chart.css */
+
+.earning-summary-chart-container {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    height: 450px;
+    width: 800px;
+    margin-top: -5px;
+    margin-left: -315px;
+}
+
+.earning-summary-chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-family: Arial, sans-serif;
+}
+
+.earning-summary-chart-header h3 {
+    font-size: 18px;
+    color: #333;
+    font-weight: bold;
+}
+
+.earning-summary-chart-header p {
+    font-size: 14px;
+    color: #888;
+}
+
+.earning-summary-chart-container canvas {
+    width: 100% !important; /* Force the chart to stay inside container */
+    height: auto !important;
 }
 
 /* notification-modal.css */
@@ -1920,4 +1996,55 @@ body {
     left: 10px;
     font-size: 12px;
     color: #555;
+}
+
+/* printable-report.css */
+
+.printable-report-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.printable-report-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.printable-report-header h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.printable-report-header p {
+    font-size: 14px;
+    color: gray;
+}
+
+.printable-report-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.printable-report-table th,
+.printable-report-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.printable-report-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.printable-report-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.printable-report-footer {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 20px;
+    color: gray;
 }

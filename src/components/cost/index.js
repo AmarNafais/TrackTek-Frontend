@@ -2,7 +2,7 @@ import React from 'react';
 import Sidebar from "../side-nav";
 import Header from "../header";
 import ProductionDonutChart from "./production-donut-chart.js";
-import earningSummaryChart from "../../assets/earning-summary-chart.svg";
+import EarningSummaryChart from "./earning-summary-chart.js";
 
 const CostsPage = () => {
     return (
@@ -94,7 +94,7 @@ const CostsPage = () => {
                             </div>
 
                             <div className="cost-earning-summary">
-                                <img src={earningSummaryChart} alt="Earning Summary Chart" className="cost-chart-image" />
+                                <EarningSummaryChart />
                             </div>
                         </div>
                     </div>

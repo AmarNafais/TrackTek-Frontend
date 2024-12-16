@@ -1,32 +1,71 @@
 import React, { useState } from "react";
+import { addGarment } from "../../redux/actions/axios"; // Import the addGarment API function
 
 const AddGarmentModal = ({ onClose, onAddGarment }) => {
   const [formData, setFormData] = useState({
     name: "",
     design: "",
-    category: "",
+    categoryType: "",
     sizes: "",
-    price: "",
-    status: "",
+    basePrice: "",
+    garmentStatus: "",
   });
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleAddGarment = () => {
+  const handleAddGarment = async () => {
+    if (
+      !formData.name ||
+      !formData.design ||
+      !formData.categoryType ||
+      !formData.sizes ||
+      !formData.basePrice ||
+      !formData.garmentStatus
+    ) {
+      setError("All fields are required.");
+      return;
+    }
 
-    const newGarment = {
-      name: formData.name,
-      design: formData.design,
-      category: formData.category,
-      sizes: formData.sizes,
-      price: formData.price,
-      status: formData.status,
-    };
-    onAddGarment(newGarment);
-    onClose();
+    setError(""); // Clear any previous error
+    setLoading(true);
+
+    try {
+      // Ensure sizes is properly formatted
+      const sizesArray = formData.sizes.split(",").map((size) => size.trim());
+      if (sizesArray.length === 0) {
+        throw new Error("Sizes cannot be empty.");
+      }
+
+      const garmentData = {
+        name: formData.name,
+        design: formData.design,
+        categoryType: formData.categoryType,
+        sizes: sizesArray, // Send as an array
+        basePrice: parseFloat(formData.basePrice),
+        garmentStatus: formData.garmentStatus,
+      };
+
+      console.log("Sending Garment Data:", garmentData); // Debugging line
+
+      const newGarment = await addGarment(garmentData); // Call the API to add the garment
+
+      // If API succeeds, update the parent component and close the modal
+      if (newGarment) {
+        onAddGarment(newGarment); // Pass the new garment to the parent component
+        onClose(); // Close the modal
+      }
+    } catch (err) {
+      console.error("Error adding garment:", err); // Log the error
+      setError(err.message || "Failed to add garment. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -52,14 +91,14 @@ const AddGarmentModal = ({ onClose, onAddGarment }) => {
             <input
               type="text"
               name="design"
-              placeholder="Design *"
+              placeholder="Design URL *"
               value={formData.design}
               onChange={handleInputChange}
               required
             />
             <select
-              name="category"
-              value={formData.category}
+              name="categoryType"
+              value={formData.categoryType}
               onChange={handleInputChange}
               required
             >
@@ -72,22 +111,22 @@ const AddGarmentModal = ({ onClose, onAddGarment }) => {
             <input
               type="text"
               name="sizes"
-              placeholder="Sizes *"
+              placeholder="Sizes (comma-separated) *"
               value={formData.sizes}
               onChange={handleInputChange}
               required
             />
             <input
-              type="text"
-              name="price"
-              placeholder="Price *"
-              value={formData.price}
+              type="number"
+              name="basePrice"
+              placeholder="Base Price *"
+              value={formData.basePrice}
               onChange={handleInputChange}
               required
             />
             <select
-              name="status"
-              value={formData.status}
+              name="garmentStatus"
+              value={formData.garmentStatus}
               onChange={handleInputChange}
               required
             >
@@ -96,12 +135,17 @@ const AddGarmentModal = ({ onClose, onAddGarment }) => {
               <option value="Discontinued">Discontinued</option>
             </select>
           </div>
+          {error && <div className="error-message">{error}</div>}
         </div>
         <div className="modal-footer">
-          <button className="add-user-modal-button" onClick={handleAddGarment}>
-            Add Garment
+          <button
+            className="add-user-modal-button"
+            onClick={handleAddGarment}
+            disabled={loading}
+          >
+            {loading ? "Adding..." : "Add Garment"}
           </button>
-          <button className="cancel-button" onClick={onClose}>
+          <button className="cancel-button" onClick={onClose} disabled={loading}>
             Cancel
           </button>
         </div>
