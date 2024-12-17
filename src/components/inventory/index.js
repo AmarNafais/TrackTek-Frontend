@@ -4,73 +4,57 @@ import Header from "../header";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import AddInventoryModal from "./add-inventory-modal";
 import EditInventoryModal from "./edit-inventory-modal";
-import { fetchMaterials, deleteMaterial } from "../../redux/actions/axios"; // Import fetchMaterials and deleteMaterial API functions
+import NotificationModal from "../header/notification-modal";
+import { fetchMaterials, deleteMaterial } from "../../redux/actions/material";
 
 const InventoryPage = () => {
   const [showAddInventoryModal, setShowAddInventoryModal] = useState(false);
+  const [showNotificationModal, setShowNotificationModal] = useState(false);
   const [editInventory, setEditInventory] = useState(null);
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
-
-  // Fetch materials from the API
+  const [notifications, setNotifications] = useState([]);
   const loadMaterials = async () => {
     try {
-      setLoading(true); // Start loading
-      const materials = await fetchMaterials(); // Fetch materials
-      // Normalize material data for display
+      setLoading(true);
+      const materials = await fetchMaterials();
       const normalizedMaterials = materials.map((material, index) => ({
-        id: material.id || index + 1, // Use material ID if available
+        id: material.id || index + 1,
         name: material.name || "N/A",
-        unitCost: material.unitCost || 0, // Keep numeric value for unitCost
+        unitCost: material.unitCost || 0,
         quantityInStock: material.quantityInStock || 0,
         unit: material.unit || "N/A",
       }));
       setItems(normalizedMaterials);
+
+      const lowStockNotifications = normalizedMaterials
+        .filter((material) => material.quantityInStock < 20)
+        .map((material) => ({
+          id: `low-stock-${material.id}`,
+          message: `Low in stock: ${material.name} has only ${material.quantityInStock} units left.`,
+          date: "Just now",
+        }));
+      setNotifications(lowStockNotifications);
     } catch (error) {
       console.error("Error fetching materials:", error.message);
     } finally {
-      setLoading(false); // Stop loading
+      setLoading(false);
     }
   };
 
-  // Load materials on component mount
   useEffect(() => {
     loadMaterials();
   }, []);
-
-  // Handle item deletion
-  const handleDelete = async (id) => {
-    try {
-      await deleteMaterial(id); // Call the delete API
-      await loadMaterials(); // Reload the table after deletion
-    } catch (error) {
-      console.error("Error deleting item:", error.message);
-    }
-  };
-
-  // Handle item addition
-  const handleAddItem = async (newItem) => {
-    try {
-      await loadMaterials(); // Reload the table after addition
-    } catch (error) {
-      console.error("Error adding item:", error.message);
-    }
-  };
-
-  // Handle item update
-  const handleSaveItem = async (updatedItem) => {
-    try {
-      await loadMaterials(); // Reload the table after update
-    } catch (error) {
-      console.error("Error updating item:", error.message);
-    }
-  };
 
   return (
     <div className="dashboard-container">
       <Sidebar />
       <main className="main-content">
         <Header />
+        <button className="notification-button" onClick={() => setShowNotificationModal(true)}>
+          Notifications
+        </button>
+
         <div className="users-page">
           <h2>Inventory</h2>
           <div className="users-table-container">
@@ -83,7 +67,7 @@ const InventoryPage = () => {
             {showAddInventoryModal && (
               <AddInventoryModal
                 onClose={() => setShowAddInventoryModal(false)}
-                onAddItem={handleAddItem}
+                onAddItem={loadMaterials}
               />
             )}
             {loading ? (
@@ -117,7 +101,7 @@ const InventoryPage = () => {
                         </button>
                         <button
                           className="action-button delete-button"
-                          onClick={() => handleDelete(item.id)}
+                          onClick={() => deleteMaterial(item.id).then(loadMaterials)}
                         >
                           <FaTrashAlt />
                         </button>
@@ -131,12 +115,19 @@ const InventoryPage = () => {
               <EditInventoryModal
                 item={editInventory}
                 onClose={() => setEditInventory(null)}
-                onSave={handleSaveItem}
+                onSave={loadMaterials}
               />
             )}
           </div>
         </div>
       </main>
+
+      {showNotificationModal && (
+        <NotificationModal
+          notifications={notifications}
+          onClose={() => setShowNotificationModal(false)}
+        />
+      )}
     </div>
   );
 };

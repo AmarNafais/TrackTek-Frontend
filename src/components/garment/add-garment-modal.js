@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { addGarment } from "../../redux/actions/axios"; // Import the addGarment API function
+import { addGarment } from "../../redux/actions/garment";
 
 const AddGarmentModal = ({ onClose, onAddGarment }) => {
   const [formData, setFormData] = useState({
@@ -9,6 +9,8 @@ const AddGarmentModal = ({ onClose, onAddGarment }) => {
     sizes: "",
     basePrice: "",
     garmentStatus: "",
+    laborHoursPerUnit: "",
+    hourlyLaborRate: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -26,17 +28,18 @@ const AddGarmentModal = ({ onClose, onAddGarment }) => {
       !formData.categoryType ||
       !formData.sizes ||
       !formData.basePrice ||
-      !formData.garmentStatus
+      !formData.garmentStatus ||
+      !formData.laborHoursPerUnit ||
+      !formData.hourlyLaborRate
     ) {
       setError("All fields are required.");
       return;
     }
 
-    setError(""); // Clear any previous error
+    setError("");
     setLoading(true);
 
     try {
-      // Ensure sizes is properly formatted
       const sizesArray = formData.sizes.split(",").map((size) => size.trim());
       if (sizesArray.length === 0) {
         throw new Error("Sizes cannot be empty.");
@@ -46,22 +49,20 @@ const AddGarmentModal = ({ onClose, onAddGarment }) => {
         name: formData.name,
         design: formData.design,
         categoryType: formData.categoryType,
-        sizes: sizesArray, // Send as an array
+        sizes: sizesArray,
         basePrice: parseFloat(formData.basePrice),
         garmentStatus: formData.garmentStatus,
+        laborHoursPerUnit: parseFloat(formData.laborHoursPerUnit),
+        hourlyLaborRate: parseFloat(formData.hourlyLaborRate),
       };
 
-      console.log("Sending Garment Data:", garmentData); // Debugging line
-
-      const newGarment = await addGarment(garmentData); // Call the API to add the garment
-
-      // If API succeeds, update the parent component and close the modal
+      const newGarment = await addGarment(garmentData);
       if (newGarment) {
-        onAddGarment(newGarment); // Pass the new garment to the parent component
-        onClose(); // Close the modal
+        onAddGarment(newGarment);
+        onClose();
       }
     } catch (err) {
-      console.error("Error adding garment:", err); // Log the error
+      console.error("Error adding garment:", err);
       setError(err.message || "Failed to add garment. Please try again.");
     } finally {
       setLoading(false);
@@ -104,7 +105,7 @@ const AddGarmentModal = ({ onClose, onAddGarment }) => {
             >
               <option value="">Select Category</option>
               <option value="Casual">Casual</option>
-              <option value="Sportswear">Sportswear</option>
+              <option value="SportsWear">SportsWear</option>
               <option value="Formal">Formal</option>
               <option value="Accessories">Accessories</option>
             </select>
@@ -134,6 +135,22 @@ const AddGarmentModal = ({ onClose, onAddGarment }) => {
               <option value="Available">Available</option>
               <option value="Discontinued">Discontinued</option>
             </select>
+            <input
+              type="number"
+              name="laborHoursPerUnit"
+              placeholder="Labor Hours Per Unit *"
+              value={formData.laborHoursPerUnit}
+              onChange={handleInputChange}
+              required
+            />
+            <input
+              type="number"
+              name="hourlyLaborRate"
+              placeholder="Hourly Labor Rate *"
+              value={formData.hourlyLaborRate}
+              onChange={handleInputChange}
+              required
+            />
           </div>
           {error && <div className="error-message">{error}</div>}
         </div>

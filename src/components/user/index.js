@@ -4,7 +4,7 @@ import Header from "../header";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import AddUserModal from "./add-user-modal";
 import EditUserModal from "./edit-user-modal";
-import { fetchUsers } from "../../redux/actions/axios";
+import { fetchUsers, updateUserStatus } from "../../redux/actions/user";
 
 const UsersPage = () => {
   const [showAddUserModal, setShowAddUserModal] = useState(false);
@@ -13,52 +13,58 @@ const UsersPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const loadUsers = async () => {
-      try {
-        const response = await fetchUsers();
-        setUsers(
-          response.map((user) => ({
-            id: user.id,
-            fullName: `${user.firstName} ${user.lastName}`,
-            email: user.email,
-            role: user.role,
-            status: user.isActive ? "Active" : "Inactive",
-          }))
-        );
-      } catch (err) {
-        setError("Failed to fetch users.");
-      } finally {
-        setLoading(false);
-      }
-    };
+  const loadUsers = async () => {
+    try {
+      const response = await fetchUsers();
+      setUsers(
+        response.map((user) => ({
+          id: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          fullName: `${user.firstName} ${user.lastName}`,
+          email: user.email,
+          role: user.role,
+          isActive: user.isActive,
+        }))
+      );
+    } catch (err) {
+      setError("Failed to fetch users.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     loadUsers();
   }, []);
 
-  const handleDelete = (id) => {
-    const updatedUsers = users.filter((user) => user.id !== id);
-    setUsers(updatedUsers);
+  const handleAddUser = async () => {
+    await loadUsers();
+    setShowAddUserModal(false);
   };
 
-  const handleAddUser = (newUser) => {
-    setUsers([...users, { ...newUser, status: "Active" }]);
+  const handleSaveUser = async () => {
+    await loadUsers();
+    setEditUser(null);
   };
 
-  const handleSaveUser = (updatedUser) => {
-    const updatedUsers = users.map((user) =>
-      user.id === updatedUser.id ? updatedUser : user
-    );
-    setUsers(updatedUsers);
-  };
-
-  const handleToggleStatus = (id) => {
-    const updatedUsers = users.map((user) =>
-      user.id === id
-        ? { ...user, status: user.status === "Active" ? "Inactive" : "Active" }
-        : user
-    );
-    setUsers(updatedUsers);
+  const handleToggleStatus = async (id) => {
+    try {
+      const userToToggle = users.find((user) => user.id === id);
+      if (!userToToggle) {
+        throw new Error("User not found");
+      }
+      const updatedStatus = !userToToggle.isActive;
+      await updateUserStatus(id, updatedStatus);
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          user.id === id ? { ...user, isActive: updatedStatus } : user
+        )
+      );
+    } catch (err) {
+      console.error("Failed to toggle status:", err.message);
+      setError("Failed to update user status. Please try again.");
+    }
   };
 
   if (loading) return <p>Loading...</p>;
@@ -72,7 +78,10 @@ const UsersPage = () => {
         <div className="users-page">
           <h2>Users</h2>
           <div className="users-table-container">
-            <button className="add-user-button" onClick={() => setShowAddUserModal(true)}>
+            <button
+              className="add-user-button"
+              onClick={() => setShowAddUserModal(true)}
+            >
               Add User
             </button>
             {showAddUserModal && (
@@ -102,11 +111,11 @@ const UsersPage = () => {
                     <td>
                       <button
                         className={`status-button ${
-                          user.status === "Active" ? "active" : "inactive"
+                          user.isActive ? "active" : "inactive"
                         }`}
                         onClick={() => handleToggleStatus(user.id)}
                       >
-                        {user.status}
+                        {user.isActive ? "Active" : "Inactive"}
                       </button>
                     </td>
                     <td>
@@ -115,12 +124,6 @@ const UsersPage = () => {
                         onClick={() => setEditUser(user)}
                       >
                         <FaEdit />
-                      </button>
-                      <button
-                        className="action-button delete-button"
-                        onClick={() => handleDelete(user.id)}
-                      >
-                        <FaTrashAlt />
                       </button>
                     </td>
                   </tr>

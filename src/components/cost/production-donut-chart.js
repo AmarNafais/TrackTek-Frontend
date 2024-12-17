@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Doughnut } from "react-chartjs-2";
 import "chart.js/auto";
-import { fetchOrders } from "../../redux/actions/axios"; // Import fetchOrders API
+import { fetchOrders } from "../../redux/actions/order";
 
 const DonutChartComponent = () => {
   const [data, setData] = useState({
     labels: ["Total Pending", "Total In Progress", "Total Completed", "Total Cancelled"],
     datasets: [
       {
-        data: [0, 0, 0, 0], // Default values
+        data: [0, 0, 0, 0],
         backgroundColor: ["#007bff", "#ffc107", "#28a745", "#dc3545"],
         hoverBackgroundColor: ["#0056b3", "#e0a800", "#218838", "#c82333"],
         borderWidth: 0,
@@ -23,7 +23,6 @@ const DonutChartComponent = () => {
     totalCancelled: 0,
   });
 
-  // Status mapping
   const statusMap = {
     1: "Pending",
     2: "In Progress",
@@ -34,15 +33,12 @@ const DonutChartComponent = () => {
   useEffect(() => {
     const loadOrderData = async () => {
       try {
-        const orders = await fetchOrders(); // Fetch orders
-
-        // Calculate counts for each status
+        const orders = await fetchOrders();
         const totalPending = orders.filter((order) => order.orderStatus === 1).length;
         const totalInProgress = orders.filter((order) => order.orderStatus === 2).length;
         const totalCompleted = orders.filter((order) => order.orderStatus === 3).length;
         const totalCancelled = orders.filter((order) => order.orderStatus === 4).length;
 
-        // Update chart data and totals
         setData({
           labels: ["Total Pending", "Total In Progress", "Total Completed", "Total Cancelled"],
           datasets: [
@@ -75,7 +71,7 @@ const DonutChartComponent = () => {
       tooltip: {
         callbacks: {
           label: (context) => {
-            return ` ${context.raw}`; // Show raw value instead of percentage
+            return ` ${context.raw}`;
           },
         },
       },

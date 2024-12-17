@@ -1,21 +1,38 @@
-import React, { useState } from "react";
-import { addOrder } from "../../redux/actions/axios"; // Import the addOrder API function
+import React, { useState, useEffect } from "react";
+import { addOrder } from "../../redux/actions/order";
+import { fetchCustomers } from "../../redux/actions/customer";
+import { fetchGarments } from "../../redux/actions/garment";
 
 const AddOrderModal = ({ onClose, onAddOrder }) => {
   const [formData, setFormData] = useState({
     customerId: "",
     orderDate: "",
     dueDate: "",
-    totalCost: 0,
-    orderStatus: "",
-    userId: "",
     garmentId: "",
     quantity: "",
     size: "",
   });
 
+  const [customers, setCustomers] = useState([]);
+  const [garments, setGarments] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const [customersData, garmentsData] = await Promise.all([
+          fetchCustomers(),
+          fetchGarments(),
+        ]);
+        setCustomers(customersData);
+        setGarments(garmentsData);
+      } catch (err) {
+        setError("Failed to load dropdown data. Please try again.");
+      }
+    };
+    loadData();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -23,13 +40,10 @@ const AddOrderModal = ({ onClose, onAddOrder }) => {
   };
 
   const handleAddOrder = async () => {
-    // Validate required fields
     if (
       !formData.customerId ||
       !formData.orderDate ||
       !formData.dueDate ||
-      !formData.orderStatus ||
-      !formData.userId ||
       !formData.garmentId ||
       !formData.quantity ||
       !formData.size
@@ -46,17 +60,14 @@ const AddOrderModal = ({ onClose, onAddOrder }) => {
         customerId: parseInt(formData.customerId, 10),
         orderDate: formData.orderDate,
         dueDate: formData.dueDate,
-        totalCost: parseFloat(formData.totalCost),
-        orderStatus: formData.orderStatus,
-        userId: parseInt(formData.userId, 10),
         garmentId: parseInt(formData.garmentId, 10),
         quantity: parseInt(formData.quantity, 10),
         size: formData.size,
       };
 
-      const addedOrder = await addOrder(newOrder); // Call the API to add the order
-      onAddOrder(addedOrder); // Pass the added order back to the parent component
-      onClose(); // Close the modal
+      const addedOrder = await addOrder(newOrder);
+      onAddOrder(addedOrder);
+      onClose();
     } catch (err) {
       setError(err.message || "Failed to add order. Please try again.");
     } finally {
@@ -76,14 +87,19 @@ const AddOrderModal = ({ onClose, onAddOrder }) => {
         </div>
         <div className="add-modal-body">
           <div className="form-grid">
-            <input
-              type="number"
+            <select
               name="customerId"
-              placeholder="Customer ID *"
               value={formData.customerId}
               onChange={handleInputChange}
               required
-            />
+            >
+              <option value="">Select Customer *</option>
+              {customers.map((customer) => (
+                <option key={customer.id} value={customer.id}>
+                  {customer.customerName}
+                </option>
+              ))}
+            </select>
             <div className="date-input-container">
               <input
                 type="date"
@@ -104,42 +120,19 @@ const AddOrderModal = ({ onClose, onAddOrder }) => {
               />
               <label className="date-placeholder">Select Due Date</label>
             </div>
-            <input
-              type="number"
-              name="totalCost"
-              placeholder="Total Cost"
-              value={formData.totalCost}
-              onChange={handleInputChange}
-              required
-            />
             <select
-              name="orderStatus"
-              value={formData.orderStatus}
-              onChange={handleInputChange}
-              required
-            >
-              <option value="">Select Order Status</option>
-              <option value="Pending">Pending</option>
-              <option value="InProgress">In Progress</option>
-              <option value="Completed">Completed</option>
-              <option value="Canceled">Canceled</option>
-            </select>
-            <input
-              type="number"
-              name="userId"
-              placeholder="User ID *"
-              value={formData.userId}
-              onChange={handleInputChange}
-              required
-            />
-            <input
-              type="number"
               name="garmentId"
-              placeholder="Garment ID *"
               value={formData.garmentId}
               onChange={handleInputChange}
               required
-            />
+            >
+              <option value="">Select Garment *</option>
+              {garments.map((garment) => (
+                <option key={garment.id} value={garment.id}>
+                  {garment.name}
+                </option>
+              ))}
+            </select>
             <input
               type="number"
               name="quantity"

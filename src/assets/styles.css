@@ -328,7 +328,7 @@ body {
     margin-right: 150px;
 }
 
-.forgot-password-left-section .form-group {
+.forgot-password-left-section .forgot-password-form-group {
     width: 100%;
     margin-bottom: 20px;
 }
@@ -426,8 +426,8 @@ body {
     margin-bottom: 30px;
 }
 
-.verify-code-left-section .form-group {
-    width: 100%;
+.verify-code-left-section .verify-code-form-group {
+    width: 94%;
     margin-bottom: 20px;
 }
 
@@ -547,8 +547,8 @@ body {
     margin-right: 250px;
 }
 
-.set-password-left-section .form-group {
-    width: 100%;
+.set-password-left-section .set-password-form-group {
+    width: 95%;
     margin-bottom: 20px;
 }
 
@@ -848,26 +848,27 @@ body {
 
 .notification-icon {
     position: relative;
+    cursor: pointer;
     font-size: 25px;
-    margin-top: 10px;
+    top: 4px;
 }
 
-.bell-icon {
-    font-size: 18px;
-    color: #444;
-}
-
-.notification-icon::after {
-    content: "";
+.notification-dot {
     position: absolute;
-    top: 1px;
-    right: 1px;
+    top: 0px;
+    right: 0px;
     width: 8px;
     height: 8px;
     background-color: red;
     border-radius: 50%;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
 }
 
+
+.bell-icon {
+    font-size: 20px;
+    color: #444;
+}
 .user-info {
     display: flex;
     align-items: center;
@@ -1035,6 +1036,39 @@ body {
     margin-top: 1px;
     margin-right: -5px;
 }
+
+.logout-button {
+    background-color: #2B3A8E;
+    /* Red color for logout */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 10px;
+    /* Space between buttons */
+    transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+    background-color: #5260ae;
+    /* Darker red on hover */
+}
+
+.logout-button:active {
+    background-color: #5260ae;
+    /* Even darker red on click */
+}
+
+.logout-button:disabled {
+    background-color: #e0e0e0;
+    /* Gray for disabled state */
+    color: #9e9e9e;
+    cursor: not-allowed;
+}
+
 
 /* user.css */
 
@@ -1674,7 +1708,8 @@ body {
 }
 
 .earning-summary-chart-container canvas {
-    width: 100% !important; /* Force the chart to stay inside container */
+    width: 100% !important;
+    /* Force the chart to stay inside container */
     height: auto !important;
 }
 

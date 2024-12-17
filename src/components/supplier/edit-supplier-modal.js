@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import { updateCustomer } from "../../redux/actions/customer";
+import { updateSupplier } from "../../redux/actions/supplier";
 
-const EditCustomerModal = ({ customer, onClose, onSave }) => {
+const EditSupplierModal = ({ supplier, onClose, onSave }) => {
     const [formData, setFormData] = useState({
-        name: customer.name,
-        email: customer.email,
-        number: customer.number,
-        address: customer.address,
-        status: customer.status,
+        name: supplier.name,
+        contact: supplier.contact,
+        email: supplier.email,
+        address: supplier.address,
     });
 
     const [loading, setLoading] = useState(false);
@@ -19,13 +18,7 @@ const EditCustomerModal = ({ customer, onClose, onSave }) => {
     };
 
     const handleSave = async () => {
-        if (
-            !formData.name ||
-            !formData.email ||
-            !formData.number ||
-            !formData.address ||
-            !formData.status
-        ) {
+        if (!formData.name || !formData.contact || !formData.email || !formData.address) {
             setError("All fields are required.");
             return;
         }
@@ -34,27 +27,25 @@ const EditCustomerModal = ({ customer, onClose, onSave }) => {
         setLoading(true);
 
         try {
-            const updatedCustomerData = {
-                id: customer.id,
-                customerName: formData.name,
-                customerEmail: formData.email,
-                contactNumber: formData.number,
+            const updatedSupplierData = {
+                id: supplier.id,
+                name: formData.name,
+                contact: formData.contact,
+                email: formData.email,
                 address: formData.address,
-                isActive: formData.status === "Active",
             };
 
-            const updatedCustomer = await updateCustomer(updatedCustomerData);
+            const updatedSupplier = await updateSupplier(updatedSupplierData);
             onSave({
-                id: updatedCustomer.id,
-                name: updatedCustomer.customerName,
-                email: updatedCustomer.customerEmail,
-                number: updatedCustomer.contactNumber,
-                address: updatedCustomer.address,
-                status: updatedCustomer.isActive ? "Active" : "Inactive",
+                id: updatedSupplier.id,
+                name: updatedSupplier.name,
+                contact: updatedSupplier.contact,
+                email: updatedSupplier.email,
+                address: updatedSupplier.address,
             });
             onClose();
         } catch (err) {
-            setError(err.message || "Failed to update customer. Please try again.");
+            setError(err.message || "Failed to update supplier. Please try again.");
         } finally {
             setLoading(false);
         }
@@ -63,32 +54,32 @@ const EditCustomerModal = ({ customer, onClose, onSave }) => {
     return (
         <div className="edit-modal">
             <div className="edit-modal-content">
-                <h2>Edit Customer</h2>
-                <p>ID - {customer.id}</p>
+                <h2>Edit Supplier</h2>
+                <p>ID - {supplier.id}</p>
                 <div className="edit-form-row">
                     <input
                         type="text"
                         name="name"
-                        placeholder="Customer Name *"
+                        placeholder="Supplier Name *"
                         value={formData.name}
                         onChange={handleChange}
                         required
                     />
                     <input
-                        type="email"
-                        name="email"
-                        placeholder="Email *"
-                        value={formData.email}
+                        type="tel"
+                        name="contact"
+                        placeholder="Contact Number *"
+                        value={formData.contact}
                         onChange={handleChange}
                         required
                     />
                 </div>
                 <div className="edit-form-row">
                     <input
-                        type="tel"
-                        name="number"
-                        placeholder="Phone Number *"
-                        value={formData.number}
+                        type="email"
+                        name="email"
+                        placeholder="Email *"
+                        value={formData.email}
                         onChange={handleChange}
                         required
                     />
@@ -100,18 +91,6 @@ const EditCustomerModal = ({ customer, onClose, onSave }) => {
                         onChange={handleChange}
                         required
                     />
-                </div>
-                <div className="edit-form-row">
-                    <select
-                        name="status"
-                        value={formData.status}
-                        onChange={handleChange}
-                        required
-                    >
-                        <option value="">Select Status</option>
-                        <option value="Active">Active</option>
-                        <option value="Inactive">Inactive</option>
-                    </select>
                 </div>
                 {error && <p className="error-message">{error}</p>}
                 <div className="edit-modal-actions">
@@ -135,4 +114,4 @@ const EditCustomerModal = ({ customer, onClose, onSave }) => {
     );
 };
 
-export default EditCustomerModal;
+export default EditSupplierModal;

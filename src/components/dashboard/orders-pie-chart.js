@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Pie } from "react-chartjs-2";
 import "chart.js/auto";
-import { fetchOrders } from "../../redux/actions/axios"; // Import the fetchOrders API
+import { fetchOrders } from "../../redux/actions/order";
 
 const OrdersPieChart = () => {
   const [chartData, setChartData] = useState({
     labels: ["Pending", "In Progress", "Completed", "Cancelled"],
     datasets: [
       {
-        data: [0, 0, 0, 0], // Initialize with 0 counts for each status
+        data: [0, 0, 0, 0],
         backgroundColor: ["#1abc9c", "#5b57d9", "#48c9f1", "#e74c3c"],
         hoverBackgroundColor: ["#1abc9c", "#5b57d9", "#48c9f1", "#e74c3c"],
       },
@@ -17,7 +17,7 @@ const OrdersPieChart = () => {
 
   const statusMap = {
     1: "Pending",
-    2: "In Progress",
+    2: "InProgress",
     3: "Completed",
     4: "Cancelled",
   };
@@ -26,9 +26,8 @@ const OrdersPieChart = () => {
     const loadOrderData = async () => {
       try {
         const orders = await fetchOrders();
-        const statusCounts = { Pending: 0, "In Progress": 0, Completed: 0, Cancelled: 0 };
+        const statusCounts = { Pending: 0, "InProgress": 0, Completed: 0, Cancelled: 0 };
 
-        // Count orders by status
         orders.forEach((order) => {
           const status = statusMap[order.orderStatus];
           if (status) {
@@ -36,7 +35,6 @@ const OrdersPieChart = () => {
           }
         });
 
-        // Update chart data with the computed status counts
         setChartData({
           labels: Object.keys(statusCounts),
           datasets: [
@@ -55,7 +53,6 @@ const OrdersPieChart = () => {
     loadOrderData();
   }, []);
 
-  // Chart configuration options
   const options = {
     plugins: {
       legend: {
@@ -65,7 +62,7 @@ const OrdersPieChart = () => {
         callbacks: {
           label: (tooltipItem) => {
             const value = tooltipItem.raw;
-            return ` ${value}`; // Display count for each status
+            return ` ${value}`;
           },
         },
       },

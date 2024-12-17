@@ -6,7 +6,7 @@ import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { SlOptionsVertical } from "react-icons/sl";
 import AddGarmentModal from "./add-garment-modal";
 import EditGarmentModal from "./edit-garment-modal";
-import { fetchGarments, deleteGarment } from "../../redux/actions/axios"; // Import fetchGarments and deleteGarment APIs
+import { fetchGarments, deleteGarment } from "../../redux/actions/garment";
 
 const GarmentsPage = () => {
   const [showAddGarmentModal, setShowAddGarmentModal] = useState(false);
@@ -15,27 +15,26 @@ const GarmentsPage = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Fetch garments from API
   const loadGarments = async () => {
     try {
-      setLoading(true); // Start loading
+      setLoading(true);
       const garmentsData = await fetchGarments();
       setGarments(garmentsData);
     } catch (error) {
       console.error("Error fetching garments:", error.message);
     } finally {
-      setLoading(false); // Stop loading
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    loadGarments(); // Load garments on component mount
+    loadGarments();
   }, []);
 
   const handleDelete = async (id) => {
     try {
-      await deleteGarment(id); // Call the delete API
-      await loadGarments(); // Reload the table after deletion
+      await deleteGarment(id);
+      await loadGarments();
     } catch (error) {
       console.error("Error deleting garment:", error.message);
     }
@@ -43,7 +42,7 @@ const GarmentsPage = () => {
 
   const handleAddGarment = async (newGarment) => {
     try {
-      await loadGarments(); // Reload the table after adding
+      await loadGarments();
     } catch (error) {
       console.error("Error adding garment:", error.message);
     }
@@ -51,14 +50,14 @@ const GarmentsPage = () => {
 
   const handleSaveGarment = async (updatedGarment) => {
     try {
-      await loadGarments(); // Reload the table after updating
+      await loadGarments();
     } catch (error) {
       console.error("Error updating garment:", error.message);
     }
   };
 
-  const handleMoreGarment = () => {
-    navigate("/garment-more");
+  const handleMoreGarment = (garmentId) => {
+    navigate(`/garment-more/${garmentId}`);
   };
 
   const handleToggleGarmentStatus = async (id) => {
@@ -145,10 +144,11 @@ const GarmentsPage = () => {
                         </button>
                         <button
                           className="action-button more-button"
-                          onClick={handleMoreGarment}
+                          onClick={() => handleMoreGarment(garment.id)}
                         >
                           <SlOptionsVertical />
                         </button>
+
                       </td>
                     </tr>
                   ))}

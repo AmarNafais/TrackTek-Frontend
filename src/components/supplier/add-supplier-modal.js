@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import { addCustomer } from "../../redux/actions/customer";
+import { addSupplier } from "../../redux/actions/supplier";
 
-const AddCustomerModal = ({ onClose, onAddCustomer }) => {
+const AddSupplierModal = ({ onClose, onAddSupplier }) => {
   const [formData, setFormData] = useState({
     name: "",
+    contact: "",
     email: "",
-    number: "",
     address: "",
-    status: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -18,14 +17,8 @@ const AddCustomerModal = ({ onClose, onAddCustomer }) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleAddCustomer = async () => {
-    if (
-      !formData.name ||
-      !formData.email ||
-      !formData.number ||
-      !formData.address ||
-      !formData.status
-    ) {
+  const handleAddSupplier = async () => {
+    if (!formData.name || !formData.contact || !formData.email || !formData.address) {
       setError("All fields are required.");
       return;
     }
@@ -34,26 +27,24 @@ const AddCustomerModal = ({ onClose, onAddCustomer }) => {
     setLoading(true);
 
     try {
-      const newCustomerData = {
-        customerName: formData.name,
-        customerEmail: formData.email,
-        contactNumber: formData.number,
+      const newSupplierData = {
+        name: formData.name,
+        contact: formData.contact,
+        email: formData.email,
         address: formData.address,
-        isActive: formData.status === "Active",
       };
 
-      const addedCustomer = await addCustomer(newCustomerData);
-      onAddCustomer({
-        id: addedCustomer.id,
-        name: addedCustomer.customerName,
-        email: addedCustomer.customerEmail,
-        number: addedCustomer.contactNumber,
-        address: addedCustomer.address,
-        status: addedCustomer.isActive ? "Active" : "Inactive",
+      const addedSupplier = await addSupplier(newSupplierData);
+      onAddSupplier({
+        id: addedSupplier.id,
+        name: addedSupplier.name,
+        contact: addedSupplier.contact,
+        email: addedSupplier.email,
+        address: addedSupplier.address,
       });
       onClose();
     } catch (err) {
-      setError(err.message || "Failed to add customer. Please try again.");
+      setError(err.message || "Failed to add supplier. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -64,7 +55,7 @@ const AddCustomerModal = ({ onClose, onAddCustomer }) => {
       <div className="add-modal-overlay" onClick={onClose}></div>
       <div className="add-modal-content">
         <div className="add-modal-header">
-          <h3>Add Customer</h3>
+          <h3>Add Supplier</h3>
           <button className="close-button" onClick={onClose}>
             &times;
           </button>
@@ -74,8 +65,16 @@ const AddCustomerModal = ({ onClose, onAddCustomer }) => {
             <input
               type="text"
               name="name"
-              placeholder="Customer Name *"
+              placeholder="Supplier Name *"
               value={formData.name}
+              onChange={handleInputChange}
+              required
+            />
+            <input
+              type="tel"
+              name="contact"
+              placeholder="Contact Number *"
+              value={formData.contact}
               onChange={handleInputChange}
               required
             />
@@ -88,14 +87,6 @@ const AddCustomerModal = ({ onClose, onAddCustomer }) => {
               required
             />
             <input
-              type="tel"
-              name="number"
-              placeholder="Phone Number *"
-              value={formData.number}
-              onChange={handleInputChange}
-              required
-            />
-            <input
               type="text"
               name="address"
               placeholder="Address *"
@@ -103,26 +94,16 @@ const AddCustomerModal = ({ onClose, onAddCustomer }) => {
               onChange={handleInputChange}
               required
             />
-            <select
-              name="status"
-              value={formData.status}
-              onChange={handleInputChange}
-              required
-            >
-              <option value="">Select Status</option>
-              <option value="Active">Active</option>
-              <option value="Inactive">Inactive</option>
-            </select>
           </div>
           {error && <p className="error-message">{error}</p>}
         </div>
         <div className="modal-footer">
           <button
             className="add-user-modal-button"
-            onClick={handleAddCustomer}
+            onClick={handleAddSupplier}
             disabled={loading}
           >
-            {loading ? "Adding..." : "Add Customer"}
+            {loading ? "Adding..." : "Add Supplier"}
           </button>
           <button className="cancel-button" onClick={onClose} disabled={loading}>
             Cancel
@@ -133,4 +114,4 @@ const AddCustomerModal = ({ onClose, onAddCustomer }) => {
   );
 };
 
-export default AddCustomerModal;
+export default AddSupplierModal;

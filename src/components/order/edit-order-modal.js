@@ -1,31 +1,51 @@
-import React, { useState } from "react";
-import { updateOrder } from "../../redux/actions/axios"; // Import the updateOrder API function
+import React, { useState, useEffect } from "react";
+import { fetchCustomers } from "../../redux/actions/customer";
+import { fetchGarments } from "../../redux/actions/garment";
+import { updateOrder } from "../../redux/actions/order";
 
 const formatDate = (date) => {
-    if (!date) return ""; // Handle empty date
+    if (!date) return "";
     const d = new Date(date);
     const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, "0"); // Add leading zero
-    const day = String(d.getDate()).padStart(2, "0"); // Add leading zero
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
 };
 
 const EditOrderModal = ({ order, onClose, onSave }) => {
     const [formData, setFormData] = useState({
         customerId: order.customerId,
+        garmentId: order.garmentId,
         orderDate: formatDate(order.orderDate),
         dueDate: formatDate(order.dueDate),
         totalCost: order.totalCost || 0,
         orderStatus: order.orderStatus,
-        userId: order.userId,
-        garmentId: order.garmentId,
         quantity: order.quantity || 0,
         size: order.size || "",
         id: order.id,
     });
 
+    const [customers, setCustomers] = useState([]);
+    const [garments, setGarments] = useState([]);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        const loadDropdownData = async () => {
+            try {
+                const [customersData, garmentsData] = await Promise.all([
+                    fetchCustomers(),
+                    fetchGarments(),
+                ]);
+                setCustomers(customersData);
+                setGarments(garmentsData);
+            } catch (err) {
+                console.error("Error fetching dropdown data:", err.message);
+            }
+        };
+
+        loadDropdownData();
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -43,9 +63,9 @@ const EditOrderModal = ({ order, onClose, onSave }) => {
                 quantity: parseInt(formData.quantity, 10),
             };
 
-            const result = await updateOrder(updatedOrder); // Call the API to update the order
-            onSave(result); // Pass the updated order to the parent component
-            onClose(); // Close the modal
+            const result = await updateOrder(updatedOrder);
+            onSave(result);
+            onClose();
         } catch (err) {
             setError(err.message || "Failed to update order. Please try again.");
         } finally {
@@ -59,14 +79,19 @@ const EditOrderModal = ({ order, onClose, onSave }) => {
                 <h2>Edit Order</h2>
                 <p>ID - {formData.id}</p>
                 <div className="edit-form-row">
-                    <input
-                        type="number"
+                    <select
                         name="customerId"
-                        placeholder="Customer ID *"
                         value={formData.customerId}
                         onChange={handleChange}
                         required
-                    />
+                    >
+                        <option value="">Select Customer</option>
+                        {customers.map((customer) => (
+                            <option key={customer.id} value={customer.id}>
+                                {customer.customerName}
+                            </option>
+                        ))}
+                    </select>
                     <div className="date-input-container">
                         <input
                             type="date"
@@ -96,21 +121,26 @@ const EditOrderModal = ({ order, onClose, onSave }) => {
                         required
                     >
                         <option value="">Select Status</option>
-                        <option value="1">Pending</option>
-                        <option value="2">In Progress</option>
-                        <option value="3">Completed</option>
-                        <option value="4">Canceled</option>
+                        <option value="0">Pending</option>
+                        <option value="1">In Progress</option>
+                        <option value="2">Completed</option>
+                        <option value="3">Canceled</option>
                     </select>
                 </div>
                 <div className="edit-form-row">
-                    <input
-                        type="number"
+                    <select
                         name="garmentId"
-                        placeholder="Garment ID *"
                         value={formData.garmentId}
                         onChange={handleChange}
                         required
-                    />
+                    >
+                        <option value="">Select Garment</option>
+                        {garments.map((garment) => (
+                            <option key={garment.id} value={garment.id}>
+                                {garment.name}
+                            </option>
+                        ))}
+                    </select>
                     <input
                         type="number"
                         name="quantity"
@@ -134,14 +164,6 @@ const EditOrderModal = ({ order, onClose, onSave }) => {
                         name="totalCost"
                         placeholder="Total Cost *"
                         value={formData.totalCost}
-                        onChange={handleChange}
-                        required
-                    />
-                    <input
-                        type="number"
-                        name="userId"
-                        placeholder="User ID *"
-                        value={formData.userId}
                         onChange={handleChange}
                         required
                     />

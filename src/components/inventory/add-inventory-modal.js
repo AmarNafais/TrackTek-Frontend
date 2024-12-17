@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { addMaterial } from "../../redux/actions/axios"; // Import the addMaterial API function
+import { addMaterial } from "../../redux/actions/material";
 
 const AddInventoryModal = ({ onClose, onAddItem }) => {
   const [formData, setFormData] = useState({
@@ -29,14 +29,14 @@ const AddInventoryModal = ({ onClose, onAddItem }) => {
     try {
       const newMaterial = {
         name: formData.name,
-        unitCost: parseFloat(formData.unitCost), // Ensure unitCost is a number
-        quantityInStock: parseInt(formData.quantityInStock, 10), // Ensure quantity is an integer
+        unitCost: parseFloat(formData.unitCost),
+        quantityInStock: parseInt(formData.quantityInStock, 10),
         unit: formData.unit,
       };
 
-      const addedMaterial = await addMaterial(newMaterial); // Call the API to add material
-      onAddItem(addedMaterial); // Update the parent component state
-      onClose(); // Close the modal
+      const addedMaterial = await addMaterial(newMaterial);
+      onAddItem(addedMaterial);
+      onClose();
     } catch (err) {
       setError(err.message || "Failed to add item. Please try again.");
     } finally {

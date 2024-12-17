@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "../components/login/login.js";
-import SignUp from "../components/login/sign-up.js";
+import Login from "../components/login/index.js";
 import ForgotPassword from "../components/login/forgot-password.js";
 import VerifyCode from "../components/login/verify-code.js";
 import SetPassword from "../components/login/set-password.js";
@@ -10,6 +9,7 @@ import User from "../components/user/index.js";
 import Inventory from "../components/inventory/index.js";
 import Order from "../components/order/index.js";
 import Customer from "../components/customer/index.js";
+import Supplier from "../components/supplier/index.js";
 import Garment from "../components/garment/index.js";
 import GarmentMore from "../components/garment/garment-more/garment-more.js";
 import Machine from "../components/machine/index.js";
@@ -24,7 +24,6 @@ const AppRoutes = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/verifycode" element={<VerifyCode />} />
         <Route path="/setpassword" element={<SetPassword />} />
@@ -70,6 +69,14 @@ const AppRoutes = () => {
           }
         />
         <Route
+          path="/supplier"
+          element={
+            <ProtectedRoute isAuthenticated={isAuthenticated}>
+              <Supplier />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/garment"
           element={
             <ProtectedRoute isAuthenticated={isAuthenticated}>
@@ -78,13 +85,14 @@ const AppRoutes = () => {
           }
         />
         <Route
-          path="/garment-more"
+          path="/garment-more/:garmentId"
           element={
             <ProtectedRoute isAuthenticated={isAuthenticated}>
               <GarmentMore />
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/machine"
           element={

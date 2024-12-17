@@ -7,7 +7,9 @@ import { GiSewingMachine } from "react-icons/gi";
 import OrdersChart from "./orders-pie-chart";
 import ProductLogPieChart from "./product-log-pie-chart";
 import OrderPerformanceLineChart from "./order-performance-line-chart";
-import { fetchUsers, fetchOrders, fetchMachines } from "../../redux/actions/axios"; // Import APIs
+import { fetchUsers } from "../../redux/actions/user";
+import { fetchMachines } from "../../redux/actions/machine";
+import { fetchOrders } from "../../redux/actions/order";
 
 const Dashboard = () => {
   const [activeUsers, setActiveUsers] = useState(0);
@@ -17,7 +19,6 @@ const Dashboard = () => {
   const [activeMachines, setActiveMachines] = useState(0);
   const [totalMachines, setTotalMachines] = useState(0);
 
-  // Fetch users, orders, and machines on component mount
   useEffect(() => {
     const loadUsers = async () => {
       try {
@@ -37,7 +38,7 @@ const Dashboard = () => {
           (order) => order.orderStatus === 1
         ).length;
         setPendingOrders(pendingCount);
-        setTotalOrders(ordersData.length); // Count total orders
+        setTotalOrders(ordersData.length);
       } catch (error) {
         console.error("Error fetching orders:", error.message);
       }

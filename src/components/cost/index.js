@@ -1,14 +1,63 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import Sidebar from "../side-nav";
 import Header from "../header";
 import ProductionDonutChart from "./production-donut-chart.js";
 import EarningSummaryChart from "./earning-summary-chart.js";
+import { fetchOrders } from "../../redux/actions/order";
+import { fetchCosts } from "../../redux/actions/cost";
 
 const CostsPage = () => {
+    const [expensesTotal, setExpensesTotal] = useState(0);
+    const [orders, setOrders] = useState([]);
+    const [loadingCosts, setLoadingCosts] = useState(true);
+    const [loadingOrders, setLoadingOrders] = useState(true);
+    const orderStatusMap = {
+        0: "Pending",
+        1: "In Progress",
+        2: "Completed",
+        3: "Cancelled",
+    };
+
+    const loadCosts = async () => {
+        try {
+            setLoadingCosts(true);
+            const costs = await fetchCosts();
+            const totalExpenses = costs.reduce((sum, cost) => sum + cost.totalCost, 0);
+            setExpensesTotal(totalExpenses);
+        } catch (error) {
+            console.error("Error fetching costs:", error.message);
+        } finally {
+            setLoadingCosts(false);
+        }
+    };
+
+    const loadOrders = async () => {
+        try {
+            setLoadingOrders(true);
+            const ordersData = await fetchOrders();
+            const normalizedOrders = ordersData.map((order) => ({
+                id: order.id,
+                customerName: order.customerName,
+                status: orderStatusMap[order.orderStatus],
+                payment: `Rs. ${order.totalCost + 1000}`,
+            }));
+            setOrders(normalizedOrders);
+        } catch (error) {
+            console.error("Error fetching orders:", error.message);
+        } finally {
+            setLoadingOrders(false);
+        }
+    };
+
+    useEffect(() => {
+        loadCosts();
+        loadOrders();
+    }, []);
+
     return (
-        <div className='dashboard-container'>
+        <div className="dashboard-container">
             <Sidebar />
-            <div className='main-content'>
+            <div className="main-content">
                 <Header />
                 <div className="cost-content-container">
                     <h2>Costs</h2>
@@ -28,7 +77,8 @@ const CostsPage = () => {
                             <div className="cost-stat-card">
                                 <h3>Expenses</h3>
                                 <div className="cost-value">
-                                    Rs.13,000 <span className="cost-change up">&#x2191; 2.5%</span>
+                                    {loadingCosts ? "Loading..." : `Rs.${expensesTotal}`}{" "}
+                                    <span className="cost-change up">&#x2191; 2.5%</span>
                                 </div>
                                 <p className="cost-details">Compared to Rs. 20,000 yesterday</p>
                                 <p className="cost-details">Last week expenses: Rs. 230,000</p>
@@ -61,34 +111,31 @@ const CostsPage = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Alex Noman</td>
-                                            <td><span className="cost-status completed">Completed</span></td>
-                                            <td>Rs. 15,000</td>
-                                            <td><button className="cost-details-button">Details</button></td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>Razib Rahman</td>
-                                            <td><span className="cost-status pending">Pending</span></td>
-                                            <td>Rs. 20,000</td>
-                                            <td><button className="cost-details-button">Details</button></td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>Luke Norton</td>
-                                            <td><span className="cost-status pending">Pending</span></td>
-                                            <td>Rs. 75,000</td>
-                                            <td><button className="cost-details-button">Details</button></td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>Luke Norton</td>
-                                            <td><span className="cost-status completed">Completed</span></td>
-                                            <td>Rs. 75,000</td>
-                                            <td><button className="cost-details-button">Details</button></td>
-                                        </tr>
+                                        {loadingOrders ? (
+                                            <tr>
+                                                <td colSpan="5">Loading...</td>
+                                            </tr>
+                                        ) : (
+                                            orders.map((order) => (
+                                                <tr key={order.id}>
+                                                    <td>{order.id}</td>
+                                                    <td>{order.customerName}</td>
+                                                    <td>
+                                                        <span
+                                                            className={`cost-status ${order.status
+                                                                .toLowerCase()
+                                                                .replace(" ", "-")}`}
+                                                        >
+                                                            {order.status}
+                                                        </span>
+                                                    </td>
+                                                    <td>{order.payment}</td>
+                                                    <td>
+                                                        <button className="cost-details-button">Details</button>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        )}
                                     </tbody>
                                 </table>
                             </div>

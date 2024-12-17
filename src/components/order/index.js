@@ -4,7 +4,7 @@ import Header from "../header";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import AddOrderModal from "./add-order-modal";
 import EditOrderModal from "./edit-order-modal";
-import { fetchOrders, deleteOrder } from "../../redux/actions/axios"; // Import fetchOrders and deleteOrder APIs
+import { fetchOrders, deleteOrder } from "../../redux/actions/order"; 
 
 const OrderPage = () => {
   const [showAddOrderModal, setShowAddOrderModal] = useState(false);
@@ -12,19 +12,25 @@ const OrderPage = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // Fetch orders from the API on component mount
+  const orderStatusMap = {
+    0: "Pending",
+    1: "InProgress",
+    2: "Completed",
+    3: "Cancelled",
+  };
+
   const loadOrders = async () => {
     try {
-      setLoading(true); // Start loading
-      const ordersData = await fetchOrders(); // Fetch orders
-      // Normalize API response for UI display
+      setLoading(true);
+      const ordersData = await fetchOrders();
       const normalizedOrders = ordersData.map((order) => ({
         id: order.id,
-        customerName: `Customer #${order.customerId}`, // Replace with actual customer name if available
-        orderDate: order.orderDate.split("T")[0], // Format date
-        dueDate: order.dueDate.split("T")[0], // Format date
-        status: mapOrderStatus(order.orderStatus), // Map numeric status to string
-        createdBy: `Garment #${order.garmentId}`, // Replace with actual garment details if available
+        customerName: order.customerName, 
+        orderDate: order.orderDate.split("T")[0],
+        dueDate: order.dueDate.split("T")[0], 
+        orderStatus: order.orderStatus, 
+        orderStatusLabel: orderStatusMap[order.orderStatus],
+        garmentName: order.name,
         quantity: order.quantity,
         size: order.size,
         totalCost: `Rs. ${order.totalCost}`,
@@ -33,64 +39,45 @@ const OrderPage = () => {
     } catch (error) {
       console.error("Error fetching orders:", error.message);
     } finally {
-      setLoading(false); // Stop loading
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    loadOrders(); // Load orders on component mount
+    loadOrders();
   }, []);
-
-  const mapOrderStatus = (status) => {
-    const statusMap = {
-      1: "Pending",
-      2: "In Progress",
-      3: "Completed",
-      4: "Cancelled",
-    };
-    return statusMap[status] || "Unknown";
-  };
-  const statusMap = {
-    1: "Pending",
-    2: "In Progress",
-    3: "Completed",
-    4: "Cancelled",
-  };
 
   const handleEditOrder = (order) => {
     const originalOrder = {
       id: order.id,
-      customerId: parseInt(order.customerName.replace("Customer #", ""), 10), // Extract ID
-      orderDate: `${order.orderDate}T00:00:00.000Z`, // Add time for ISO format
+      customerId: order.customerName,
+      orderDate: `${order.orderDate}T00:00:00.000Z`,
       dueDate: `${order.dueDate}T00:00:00.000Z`,
-      orderStatus: Object.keys(statusMap).find(
-        (key) => statusMap[key] === order.status
-      ), // Map status back to numeric
-      garmentId: parseInt(order.createdBy.replace("Garment #", ""), 10), // Extract garment ID
+      orderStatus: order.orderStatus,
+      garmentName: order.garmentName,
       quantity: order.quantity,
       size: order.size,
-      totalCost: parseFloat(order.totalCost.replace("Rs. ", "")), // Remove "Rs." and convert to float
-      userId: 0, // Assuming a placeholder or value
+      totalCost: parseFloat(order.totalCost.replace("Rs. ", "")),
+      userId: 0,
     };
     setEditOrder(originalOrder);
   };
 
-
   const handleDelete = async (id) => {
     try {
-      await deleteOrder(id); // Call the deleteOrder API
-      loadOrders(); // Reload orders after deletion
+      await deleteOrder(id);
+      loadOrders();
     } catch (error) {
       console.error("Error deleting order:", error.message);
     }
   };
 
-  const handleAddOrder = (newOrder) => {
-    loadOrders(); // Reload orders after adding
+  const handleAddOrder = () => {
+    loadOrders();
   };
 
-  const handleSaveOrder = (updatedOrder) => {
-    loadOrders(); // Reload orders after updating
+  const handleSaveOrder = () => {
+    loadOrders();
   };
 
   return (
@@ -124,7 +111,7 @@ const OrderPage = () => {
                     <th>Order Date</th>
                     <th>Due Date</th>
                     <th>Status</th>
-                    <th>Garment Info</th>
+                    <th>Garment Name</th>
                     <th>Quantity</th>
                     <th>Size</th>
                     <th>Total Cost</th>
@@ -139,11 +126,15 @@ const OrderPage = () => {
                       <td>{order.orderDate}</td>
                       <td>{order.dueDate}</td>
                       <td>
-                        <span className={`status-label ${order.status.toLowerCase().replace(" ", "-")}`}>
-                          {order.status}
+                        <span
+                          className={`status-label ${order.orderStatusLabel
+                            .toLowerCase()
+                            .replace(" ", "-")}`}
+                        >
+                          {order.orderStatusLabel}
                         </span>
                       </td>
-                      <td>{order.createdBy}</td>
+                      <td>{order.garmentName}</td>
                       <td>{order.quantity}</td>
                       <td>{order.size}</td>
                       <td>{order.totalCost}</td>
@@ -156,7 +147,7 @@ const OrderPage = () => {
                         </button>
                         <button
                           className="action-button delete-button"
-                        onClick={() => handleDelete(order.id)}
+                          onClick={() => handleDelete(order.id)}
                         >
                           <FaTrashAlt />
                         </button>

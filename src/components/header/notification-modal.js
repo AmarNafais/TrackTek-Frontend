@@ -1,29 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { FiX } from "react-icons/fi";
 
-const NotificationModal = ({ onClose }) => {
-  const [notifications, setNotifications] = useState([
-    {
-      id: 1,
-      message: "Frankie Sullivan commented on your post: 'This is looking great!'",
-      date: "2 hours ago",
-    },
-    {
-      id: 2,
-      message: "Amélie Laurent followed you.",
-      date: "10 hours ago",
-    },
-    {
-      id: 3,
-      message: "Mikah DiStefano uploaded 2 attachments.",
-      date: "Yesterday",
-    },
-  ]);
-
-  const handleDismissNotification = (id) => {
-    setNotifications(notifications.filter((notification) => notification.id !== id));
-  };
-
+const NotificationModal = ({ notifications, onClose }) => {
   return (
     <div className="notification-modal-container">
       <div className="notification-modal">
@@ -41,12 +19,6 @@ const NotificationModal = ({ onClose }) => {
                   <p>{notification.message}</p>
                   <span className="notification-date">{notification.date}</span>
                 </div>
-                <button
-                  className="dismiss-notification-btn"
-                  onClick={() => handleDismissNotification(notification.id)}
-                >
-                  <FiX />
-                </button>
               </li>
             ))}
           </ul>

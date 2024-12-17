@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { updateMaterial } from "../../redux/actions/axios"; // Import the updateMaterial API function
+import { updateMaterial } from "../../redux/actions/material";
 
 const EditInventoryModal = ({ item, onClose, onSave }) => {
     const [formData, setFormData] = useState({
         name: item.name,
-        unitCost: item.unitCost, // Ensure this is numeric
-        quantityInStock: item.quantityInStock, // Correct key for quantity
-        unit: item.unit, // Correct key for unit
+        unitCost: item.unitCost,
+        quantityInStock: item.quantityInStock,
+        unit: item.unit,
     });
 
     const [loading, setLoading] = useState(false);
@@ -18,7 +18,6 @@ const EditInventoryModal = ({ item, onClose, onSave }) => {
     };
 
     const handleSave = async () => {
-        // Validate required fields
         if (!formData.name || !formData.unitCost || !formData.quantityInStock || !formData.unit) {
             setError("All fields are required.");
             return;
@@ -29,16 +28,16 @@ const EditInventoryModal = ({ item, onClose, onSave }) => {
 
         try {
             const updatedMaterial = {
-                id: item.id, // Include the material ID
+                id: item.id,
                 name: formData.name,
-                unitCost: parseFloat(formData.unitCost), // Ensure unitCost is a number
-                quantityInStock: parseInt(formData.quantityInStock, 10), // Ensure quantity is an integer
+                unitCost: parseFloat(formData.unitCost),
+                quantityInStock: parseInt(formData.quantityInStock, 10),
                 unit: formData.unit,
             };
 
-            const result = await updateMaterial(updatedMaterial); // Call the API to update the material
-            onSave(result); // Pass the updated material to the parent component
-            onClose(); // Close the modal
+            const result = await updateMaterial(updatedMaterial);
+            onSave(result);
+            onClose();
         } catch (err) {
             setError(err.message || "Failed to update item. Please try again.");
         } finally {

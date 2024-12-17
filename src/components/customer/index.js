@@ -4,20 +4,17 @@ import Header from "../header";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import AddCustomerModal from "./add-customer-modal";
 import EditCustomerModal from "./edit-customer-modal";
-import { fetchCustomers, deleteCustomer } from "../../redux/actions/axios"; // Import the fetchCustomers and deleteCustomer API functions
+import { fetchCustomers, deleteCustomer } from "../../redux/actions/customer";
 
 const CustomersPage = () => {
   const [showAddCustomerModal, setShowAddCustomerModal] = useState(false);
   const [editCustomer, setEditCustomer] = useState(null);
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(false);
-
-  // Fetch customers from the API on component mount
   const loadCustomers = async () => {
     try {
-      setLoading(true); // Start loading
-      const customersData = await fetchCustomers(); // Fetch customers
-      // Map API response to UI-compatible structure
+      setLoading(true);
+      const customersData = await fetchCustomers();
       const normalizedCustomers = customersData.map((customer) => ({
         id: customer.id,
         name: customer.customerName,
@@ -30,7 +27,7 @@ const CustomersPage = () => {
     } catch (error) {
       console.error("Error fetching customers:", error.message);
     } finally {
-      setLoading(false); // Stop loading
+      setLoading(false);
     }
   };
 
@@ -40,19 +37,19 @@ const CustomersPage = () => {
 
   const handleDelete = async (id) => {
     try {
-      await deleteCustomer(id); // Call the deleteCustomer API
-      loadCustomers(); // Reload customers after deletion
+      await deleteCustomer(id);
+      loadCustomers();
     } catch (error) {
       console.error("Error deleting customer:", error.message);
     }
   };
 
   const handleAddCustomer = (newCustomer) => {
-    loadCustomers(); // Reload customers after adding
+    loadCustomers();
   };
 
   const handleSaveCustomer = (updatedCustomer) => {
-    loadCustomers(); // Reload customers after updating
+    loadCustomers();
   };
 
   const handleToggleCustomerStatus = async (id) => {

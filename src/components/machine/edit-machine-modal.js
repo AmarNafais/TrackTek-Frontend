@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { updateMachine } from "../../redux/actions/axios"; // Import the updateMachine API function
+import { updateMachine } from "../../redux/actions/machine";
 
 const EditMachineModal = ({ machine, onClose, onSave }) => {
   const [formData, setFormData] = useState({
@@ -21,28 +21,23 @@ const EditMachineModal = ({ machine, onClose, onSave }) => {
       return;
     }
 
-    setError(""); // Clear any previous error messages
-    setLoading(true); // Show loading state
+    setError("");
+    setLoading(true);
 
     try {
-      // Prepare the updated machine data
       const updatedMachineData = {
-        id: machine.id, // Retain the original ID
+        id: machine.id,
         name: formData.name,
         machineType: formData.machineType,
         machineStatus: formData.machineStatus,
       };
-
-      // Call the API to update the machine
       const updatedMachine = await updateMachine(updatedMachineData);
-
-      // Pass the updated machine to the parent component's onSave function
       onSave(updatedMachine);
-      onClose(); // Close the modal
+      onClose();
     } catch (err) {
       setError(err.message || "Failed to update the machine. Please try again.");
     } finally {
-      setLoading(false); // Hide loading state
+      setLoading(false);
     }
   };
 

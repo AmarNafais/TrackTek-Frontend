@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { addMachine } from "../../redux/actions/axios"; // Import the addMachine API function
+import { addMachine } from "../../redux/actions/machine";
 
 const AddMachineModal = ({ onClose, onAddMachine }) => {
   const [formData, setFormData] = useState({
     name: "",
     machineType: "",
-    machineStatus: "",
+    machineStatus: "InActive",
+    hourlyRate: "",
   });
 
   const [error, setError] = useState("");
@@ -17,29 +18,28 @@ const AddMachineModal = ({ onClose, onAddMachine }) => {
   };
 
   const handleAddMachine = async () => {
-    if (!formData.name || !formData.machineType || !formData.machineStatus) {
-      setError("All fields are required.");
+    if (!formData.name || !formData.machineType || !formData.hourlyRate) {
+      setError("All fields except status are required.");
       return;
     }
 
-    setError(""); // Clear any previous error messages
-    setLoading(true); // Show loading state
+    setError("");
+    setLoading(true);
 
     try {
-      // Call the API to add a machine
       const newMachine = await addMachine({
         name: formData.name,
         machineType: formData.machineType,
         machineStatus: formData.machineStatus,
+        hourlyRate: parseFloat(formData.hourlyRate),
       });
 
-      // Update the parent component's state with the newly added machine
       onAddMachine(newMachine);
-      onClose(); // Close the modal
+      onClose();
     } catch (err) {
       setError(err.message || "Failed to add the machine. Please try again.");
     } finally {
-      setLoading(false); // Hide loading state
+      setLoading(false);
     }
   };
 
@@ -73,16 +73,20 @@ const AddMachineModal = ({ onClose, onAddMachine }) => {
               <option value="Normal">Normal</option>
               <option value="High Speed">High Speed</option>
             </select>
-            <select
-              name="machineStatus"
-              value={formData.machineStatus}
+            <input
+              type="number"
+              name="hourlyRate"
+              placeholder="Hourly Rate *"
+              value={formData.hourlyRate}
               onChange={handleInputChange}
               required
-            >
-              <option value="">Select Status</option>
-              <option value="Active">Active</option>
-              <option value="InActive">InActive</option>
-            </select>
+            />
+            <input
+              type="text"
+              name="machineStatus"
+              value={formData.machineStatus}
+              readOnly
+            />
           </div>
           {error && <div className="error-message">{error}</div>}
         </div>

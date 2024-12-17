@@ -1,36 +1,67 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import bluetexLogo from "../../assets/bluetex-logo.svg";
 import phoneImage from "../../assets/verify-code-image.svg";
 
 const VerifyCode = () => {
   const [code, setCode] = useState("");
-  const [isCodeVisible, setCodeVisible] = useState(false);
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state && location.state.email) {
+      setEmail(location.state.email);
+    } else {
+      navigate("/");
+    }
+  }, [location, navigate]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!code) {
+      setError("Please enter the verification code.");
+      return;
+    }
+    setError("");
+    setLoading(true);
+
+    try {
+      navigate("/setpassword", { state: { email, code } });
+    } catch (err) {
+      setError(err.message || "Verification failed.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="verify-code-container">
-      {/* Left Section */}
       <div className="verify-code-left-section">
         <img src={bluetexLogo} alt="Bluetex Logo" className="logo" />
-        <a href="/" className="verify-code-back-to-login">&lt; Back to login</a>
-        <h1>Verify code</h1>
-        <p>An authentication code has been sent to your email.</p>
-        <form>
-          <div className="form-group">
+        <h1>Verify Code</h1>
+        <p>An authentication code has been sent to <strong>{email}</strong>.</p>
+        <form onSubmit={handleSubmit}>
+          <div className="verify-code-form-group">
             <label htmlFor="code">Enter Code</label>
-            <div className="input-container">
-              <input type="number" id="number" placeholder="******" />
-            </div>
+            <input
+              type="text"
+              id="code"
+              className="input-container"
+              placeholder="******"
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              required
+            />
           </div>
-          <div className="resend-container">
-            <p>
-              Didn’t receive a code? <a href="#" className="resend-link">Resend</a>
-            </p>
-          </div>
-          <button type="submit" className="verify-button">Verify</button>
+          {error && <p className="error-message">{error}</p>}
+          <button type="submit" disabled={loading} className="verify-button">
+            {loading ? "Verifying..." : "Verify"}
+          </button>
         </form>
       </div>
-
-      {/* Right Section */}
       <div className="verify-code-right-section">
         <img src={phoneImage} alt="Phone Verification" />
       </div>

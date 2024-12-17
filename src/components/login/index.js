@@ -2,19 +2,18 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loginImage from "../../assets/login-image.svg";
 import bluetexLogo from "../../assets/bluetex-logo.svg";
-import { loginUser } from "../../redux/actions/axios"; // Import login service
+import { loginUser, fetchUsers } from "../../redux/actions/user";
 
 const Login = () => {
-  const [email, setEmail] = useState(""); // State for email
-  const [password, setPassword] = useState(""); // State for password
-  const [error, setError] = useState(""); // State for error messages
-  const [loading, setLoading] = useState(false); // State for loading spinner
-  const navigate = useNavigate(); // Navigation hook
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-    e.preventDefault(); // Prevent form reload
+    e.preventDefault();
 
-    // Basic Validation
     if (!email || !password) {
       setError("Email and Password are required.");
       return;
@@ -27,22 +26,31 @@ const Login = () => {
     }
 
     try {
-      setLoading(true); // Set loading state
-      setError(""); // Clear any previous errors
+      setLoading(true);
+      setError("");
+      const loginResponse = await loginUser(email, password);
 
-      // Call login service
-      const data = await loginUser(email, password);
+      if (loginResponse.token) {
+        localStorage.setItem("authToken", loginResponse.token);
 
-      if (data.token) {
-        localStorage.setItem("authToken", data.token); // Save token to localStorage
-        navigate("/dashboard"); // Redirect to dashboard
+        const users = await fetchUsers();
+        const currentUser = users.find((user) => user.email === email);
+
+        if (currentUser) {
+          const userName = `${currentUser.firstName} ${currentUser.lastName}`.trim();
+          localStorage.setItem("userName", userName);
+          localStorage.setItem("userEmail", currentUser.email);
+          localStorage.setItem("userRole", currentUser.role);
+        }
+
+        navigate("/dashboard");
       } else {
         throw new Error("Login failed. Please try again.");
       }
     } catch (err) {
-      setError(err.message); // Display error
+      setError(err.message);
     } finally {
-      setLoading(false); // Clear loading state
+      setLoading(false);
     }
   };
 
@@ -62,7 +70,7 @@ const Login = () => {
                   placeholder="example@gmail.com"
                   className="login-input"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)} // Update email state
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <div className="login-form-group">
@@ -72,33 +80,21 @@ const Login = () => {
                   placeholder="************"
                   className="login-input"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)} // Update password state
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
               <div className="login-button-group">
-                <div className="login-remember-me-container">
-                  <input type="checkbox" id="rememberMe" />
-                  <label htmlFor="rememberMe">Remember me</label>
-                </div>
                 <a href="/forgotpassword" className="login-forget-password-link">
                   Forgot Password?
                 </a>
               </div>
-              {error && <p className="error-message">{error}</p>} {/* Display error */}
+              {error && <p className="error-message">{error}</p>}
               <button className="login-button" type="submit" disabled={loading}>
                 {loading ? "Logging in..." : "Login"}
               </button>
             </form>
-            <div className="login-signup">
-              Don’t have an account?{" "}
-              <a href="/signup" className="login-sign-up-link">
-                Sign up
-              </a>
-            </div>
           </div>
         </div>
-
-        {/* Right Section */}
         <div className="login-right-section">
           <img src={loginImage} alt="Login Illustration" />
         </div>

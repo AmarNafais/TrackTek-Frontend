@@ -4,7 +4,7 @@ import Header from "../header";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import AddMachineModal from "./add-machine-modal";
 import EditMachineModal from "./edit-machine-modal";
-import { fetchMachines, updateMachine, deleteMachine } from "../../redux/actions/axios"; // Import update and delete functions
+import { fetchMachines, deleteMachine } from "../../redux/actions/machine";
 
 const MachinePage = () => {
   const [showAddMachineModal, setShowAddMachineModal] = useState(false);
@@ -14,24 +14,24 @@ const MachinePage = () => {
 
   const loadMachines = async () => {
     try {
-      setLoading(true); // Start loading state
-      const machineData = await fetchMachines(); // Fetch machines from the API
+      setLoading(true);
+      const machineData = await fetchMachines();
       setMachines(machineData);
     } catch (error) {
       console.error("Error fetching machines:", error.message);
     } finally {
-      setLoading(false); // Stop loading state
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    loadMachines(); // Fetch machines on component mount
+    loadMachines();
   }, []);
 
   const handleDelete = async (id) => {
     try {
-      await deleteMachine(id); // Call the API to delete the machine
-      await loadMachines(); // Refresh the table data
+      await deleteMachine(id);
+      await loadMachines();
     } catch (error) {
       console.error("Error deleting machine:", error.message);
     }
@@ -39,7 +39,7 @@ const MachinePage = () => {
 
   const handleAddMachine = async (newMachine) => {
     try {
-      await loadMachines(); // Refresh the table data
+      await loadMachines();
     } catch (error) {
       console.error("Error adding machine:", error.message);
     }
@@ -47,7 +47,7 @@ const MachinePage = () => {
 
   const handleSaveMachine = async (updatedMachine) => {
     try {
-      await loadMachines(); // Refresh the table data
+      await loadMachines();
     } catch (error) {
       console.error("Error updating machine:", error.message);
     }

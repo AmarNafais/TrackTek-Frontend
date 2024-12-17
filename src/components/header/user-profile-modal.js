@@ -51,9 +51,8 @@ const UserProfileModal = ({ onClose, user, onSave }) => {
                   key={index}
                   src={picture}
                   alt={`Profile ${index}`}
-                  className={`profile-option ${
-                    profilePicture === picture ? "selected" : ""
-                  }`}
+                  className={`profile-option ${profilePicture === picture ? "selected" : ""
+                    }`}
                   onClick={() => handlePictureSelect(picture)}
                 />
               ))}
@@ -83,15 +82,20 @@ const UserProfileModal = ({ onClose, user, onSave }) => {
               type="text"
               id="role"
               value={role}
-              onChange={(e) => setRole(e.target.value)}
+              readOnly // Add this attribute
             />
           </div>
+
         </div>
         <div className="modal-footer">
           <button className="save-button" onClick={handleSaveChanges}>
             Save Changes
           </button>
+          <button className="logout-button" onClick={() => window.location.href = "/"}>
+            Logout
+          </button>
         </div>
+
       </div>
     </div>
   );

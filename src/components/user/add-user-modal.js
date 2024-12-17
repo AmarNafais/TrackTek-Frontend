@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { addUser } from "../../redux/actions/user";
 
 const AddUserModal = ({ onClose, onAddUser }) => {
   const [formData, setFormData] = useState({
@@ -6,29 +7,37 @@ const AddUserModal = ({ onClose, onAddUser }) => {
     lastName: "",
     email: "",
     role: "",
-    password: "",
-    confirmPassword: "",
   });
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleAddUser = () => {
-    if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match!");
-      return;
-    }
+  const handleAddUser = async () => {
+    try {
+      setLoading(true);
+      setError("");
 
-    const newUser = {
-      fullName: `${formData.firstName} ${formData.lastName}`,
-      email: formData.email,
-      role: formData.role,
-      password: formData.password,
-    };
-    onAddUser(newUser);
-    onClose();
+      const newUser = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        role: formData.role,
+        isActive: true,
+      };
+
+      const response = await addUser(newUser);
+      onAddUser(response);
+      onClose();
+    } catch (err) {
+      setError(err.message || "Failed to add user. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -74,33 +83,23 @@ const AddUserModal = ({ onClose, onAddUser }) => {
               required
             >
               <option value="">Select Role Type</option>
+              <option value="SuperAdmin">Super Admin</option>
               <option value="Manager">Manager</option>
+              <option value="InventoryManager">Inventory Manager</option>
               <option value="Staff">Staff</option>
-              <option value="Admin">Admin</option>
             </select>
-            <input
-              type="password"
-              name="password"
-              placeholder="Password *"
-              value={formData.password}
-              onChange={handleInputChange}
-              required
-            />
-            <input
-              type="password"
-              name="confirmPassword"
-              placeholder="Confirm Password *"
-              value={formData.confirmPassword}
-              onChange={handleInputChange}
-              required
-            />
           </div>
+          {error && <p className="error-message">{error}</p>}
         </div>
         <div className="modal-footer">
-          <button className="add-user-modal-button" onClick={handleAddUser}>
-            Add User
+          <button
+            className="add-user-modal-button"
+            onClick={handleAddUser}
+            disabled={loading}
+          >
+            {loading ? "Adding..." : "Add User"}
           </button>
-          <button className="cancel-button" onClick={onClose}>
+          <button className="cancel-button" onClick={onClose} disabled={loading}>
             Cancel
           </button>
         </div>
